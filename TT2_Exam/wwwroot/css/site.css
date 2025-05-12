@@ -9,7 +9,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem black, 0 0 0 0.25rem black;
 }
 
 html {
@@ -17,6 +17,37 @@ html {
   min-height: 100%;
 }
 
+header {
+  background: linear-gradient(to right, #291c49, #251a42);
+}
+
+header a:link, header a:visited {
+  color: #d5dbea;
+}
+
+header .nav-link:hover {
+  color: #84a9bf;
+}
+
+header .logo {
+  height: 40px;
+  margin: 0 0;
+}
+
 body {
-  margin-bottom: 60px;
+  background: linear-gradient(to right, #274368, #5f1f78);
+}
+
+footer {
+  background-color: #3c5267;
+  color: gray;
+}
+
+footer a:link, footer a:visited {
+  text-decoration: none;
+  color: #81829e;
+}
+
+footer a:hover {
+  color: #84a9bf;
 }

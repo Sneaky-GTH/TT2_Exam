@@ -1,0 +1,15 @@
+@model IEnumerable<TT2_Exam.Models.VideoGameModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@foreach (var item in Model)
+{
+    <div>
+        <h3>
+            <a asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+        </h3>
+    </div>
+}

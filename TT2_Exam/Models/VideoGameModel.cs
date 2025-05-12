@@ -11,5 +11,8 @@ namespace TT2_Exam.Models
         public DateTime ReleaseDate { get; set; }
         
         public decimal Price { get; set; }
+        
+        public ICollection<CategoryModel> Categories { get; set; } = new List<CategoryModel>();
+        
     }
 }
