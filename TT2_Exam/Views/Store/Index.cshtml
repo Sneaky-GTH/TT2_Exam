@@ -1,15 +1,68 @@
-@model IEnumerable<TT2_Exam.Models.VideoGameModel>
-
+@model StoreViewModel
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Store";
 }
 
-@foreach (var item in Model)
-{
-    <div>
-        <h3>
-            <a asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
-        </h3>
+<div class="container mt-4">
+    <!-- Search Bar -->
+    <form method="get" asp-action="Index">
+        <div class="input-group mb-3">
+            <input type="text" name="SearchQuery" value="@Model.SearchQuery" class="form-control" placeholder="Search games..." />
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    <div class="row">
+        <!-- Left Sidebar: Categories -->
+        <div class="col-md-2">
+            <h5>Categories</h5>
+            <form method="get" asp-action="Index">
+                @foreach (var category in Model.AvailableCategories)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SelectedCategories" value="@category" 
+                               @(Model.SelectedCategories.Contains(category) ? "checked" : "") />
+                        <label class="form-check-label">@category</label>
+                    </div>
+                }
+                <button class="btn btn-sm btn-outline-primary mt-2" type="submit">Apply</button>
+            </form>
+        </div>
+
+        <!-- Main Content: Video Game Cards -->
+        <div class="col-md-8">
+            @foreach (var game in Model.Games)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@game.Title</h5>
+                        <p class="card-text"><strong>Price:</strong> $@game.Price</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Right Sidebar: Sorting -->
+        <div class="col-md-2">
+            <h5>Sort By</h5>
+            <form method="get" asp-action="Index">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="SortBy" value="PriceAsc" 
+                           @(Model.SortBy == "PriceAsc" ? "checked" : "") />
+                    <label class="form-check-label">Price (Low to High)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="SortBy" value="PriceDesc" 
+                           @(Model.SortBy == "PriceDesc" ? "checked" : "") />
+                    <label class="form-check-label">Price (High to Low)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="SortBy" value="Title" 
+                           @(Model.SortBy == "Title" ? "checked" : "") />
+                    <label class="form-check-label">Title</label>
+                </div>
+                <button class="btn btn-sm btn-outline-primary mt-2" type="submit">Sort</button>
+            </form>
+        </div>
     </div>
-}
+</div>

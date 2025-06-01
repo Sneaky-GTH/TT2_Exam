@@ -63,6 +63,11 @@ namespace TT2_Exam.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2047)
+                        .HasColumnType("varchar(2047)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
