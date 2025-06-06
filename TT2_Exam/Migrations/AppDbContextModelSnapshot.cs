@@ -22,21 +22,6 @@ namespace TT2_Exam.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("CategoryModelVideoGameModel", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VideoGamesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoriesId", "VideoGamesId");
-
-                    b.HasIndex("VideoGamesId");
-
-                    b.ToTable("VideoGameCategories", (string)null);
-                });
-
             modelBuilder.Entity("TT2_Exam.Models.CategoryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -53,6 +38,21 @@ namespace TT2_Exam.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("TT2_Exam.Models.GameSpecificCategoryModel", b =>
+                {
+                    b.Property<int>("VideoGameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VideoGameId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("GameSpecificCategories");
                 });
 
             modelBuilder.Entity("TT2_Exam.Models.VideoGameModel", b =>
@@ -84,19 +84,33 @@ namespace TT2_Exam.Migrations
                     b.ToTable("VideoGames");
                 });
 
-            modelBuilder.Entity("CategoryModelVideoGameModel", b =>
+            modelBuilder.Entity("TT2_Exam.Models.GameSpecificCategoryModel", b =>
                 {
-                    b.HasOne("TT2_Exam.Models.CategoryModel", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
+                    b.HasOne("TT2_Exam.Models.CategoryModel", "Category")
+                        .WithMany("GameSpecificCategories")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TT2_Exam.Models.VideoGameModel", null)
-                        .WithMany()
-                        .HasForeignKey("VideoGamesId")
+                    b.HasOne("TT2_Exam.Models.VideoGameModel", "VideoGame")
+                        .WithMany("GameSpecificCategories")
+                        .HasForeignKey("VideoGameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("VideoGame");
+                });
+
+            modelBuilder.Entity("TT2_Exam.Models.CategoryModel", b =>
+                {
+                    b.Navigation("GameSpecificCategories");
+                });
+
+            modelBuilder.Entity("TT2_Exam.Models.VideoGameModel", b =>
+                {
+                    b.Navigation("GameSpecificCategories");
                 });
 #pragma warning restore 612, 618
         }

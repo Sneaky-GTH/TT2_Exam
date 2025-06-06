@@ -20,9 +20,9 @@
                 @foreach (var category in Model.AvailableCategories)
                 {
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="SelectedCategories" value="@category" 
-                               @(Model.SelectedCategories.Contains(category) ? "checked" : "") />
-                        <label class="form-check-label">@category</label>
+                        <input class="form-check-input" type="checkbox" name="SelectedCategoryIds" value="@category.Id"
+                               @(Model.SelectedCategoryIds.Contains(category.Id) ? "checked" : "") />
+                        <label class="form-check-label">@category.Name</label>
                     </div>
                 }
                 <button class="btn btn-sm btn-outline-primary mt-2" type="submit">Apply</button>
@@ -33,12 +33,7 @@
         <div class="col-md-8">
             @foreach (var game in Model.Games)
             {
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">@game.Title</h5>
-                        <p class="card-text"><strong>Price:</strong> $@game.Price</p>
-                    </div>
-                </div>
+                @await Html.PartialAsync("_VideoGameCard", game)
             }
         </div>
 

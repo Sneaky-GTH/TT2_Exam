@@ -1,0 +1,38 @@
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-1 mt-1">
+        <div class="container justify-content-center">
+            <div class="d-flex w-100" style="max-width: 60%;">
+                    
+                <!-- Left: Logo -->
+                <div class="d-flex align-items-center me-auto">
+                    <a class="navbar-brand" href="#">
+                        <img src="~/img/hades-symbol.svg" alt="Logo" class="logo">
+                    </a>
+                </div>
+                    
+                <!-- Center: Nav links -->
+                <div class="d-flex justify-content-center align-items-center flex-grow-1">
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
+                        <ul class="navbar-nav fw-bold fs-5">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Store" asp-action="Index">Store</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                    
+                <!-- Right: User info -->
+                <div class="d-flex align-items-center ms-auto">
+                    <a class="nav-link" href="#">User</a>
+                </div>
+                    
+            </div>
+        </div>
+    </nav>
+</header>

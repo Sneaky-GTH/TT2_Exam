@@ -9,15 +9,22 @@ namespace TT2_Exam.Data
 
         public DbSet<VideoGameModel> VideoGames { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
+        public DbSet<GameSpecificCategoryModel> GameSpecificCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<GameSpecificCategoryModel>()
+                .HasKey(vc => new { vc.VideoGameId, vc.CategoryId });
 
-            // Configure many-to-many relationship
-            modelBuilder.Entity<VideoGameModel>()
-                .HasMany(v => v.Categories)
-                .WithMany(c => c.VideoGames)
-                .UsingEntity(j => j.ToTable("VideoGameCategories"));
+            modelBuilder.Entity<GameSpecificCategoryModel>()
+                .HasOne(vc => vc.VideoGame)
+                .WithMany(v => v.GameSpecificCategories)
+                .HasForeignKey(vc => vc.VideoGameId);
+
+            modelBuilder.Entity<GameSpecificCategoryModel>()
+                .HasOne(vc => vc.Category)
+                .WithMany(c => c.GameSpecificCategories)
+                .HasForeignKey(vc => vc.CategoryId);
         }
 
     }

@@ -1,0 +1,10 @@
+@model TT2_Exam.Models.VideoGameModel
+
+<div class="card mb-3">
+    <a asp-action="Details" asp-route-id="@Model.Id" class="stretched-link text-decoration-none text-reset">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text"><strong>Price:</strong> $@Model.Price.ToString("F2")</p>
+        </div>
+    </a>
+</div>

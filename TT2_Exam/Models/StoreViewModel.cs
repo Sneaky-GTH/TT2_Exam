@@ -4,11 +4,11 @@ namespace TT2_Exam.Models;
 
 public class StoreViewModel
 {
-    public List<VideoGameModel> Games { get; set; } = new();
+    public List<VideoGameModel> Games { get; set; } = [];
     
-    public List<string> AvailableCategories { get; set; } = new();
-    
-    public List<string> SelectedCategories { get; set; } = new();
+    public List<CategoryModel> AvailableCategories { get; set; } = [];
+
+    public List<int> SelectedCategoryIds { get; set; } = [];
     
     public string? SearchQuery { get; set; }
     

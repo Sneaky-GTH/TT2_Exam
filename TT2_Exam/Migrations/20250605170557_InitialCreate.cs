@@ -38,6 +38,8 @@ namespace TT2_Exam.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "varchar(2047)", maxLength: 2047, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     ReleaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
@@ -48,24 +50,24 @@ namespace TT2_Exam.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "VideoGameCategories",
+                name: "GameSpecificCategories",
                 columns: table => new
                 {
-                    CategoriesId = table.Column<int>(type: "int", nullable: false),
-                    VideoGamesId = table.Column<int>(type: "int", nullable: false)
+                    VideoGameId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VideoGameCategories", x => new { x.CategoriesId, x.VideoGamesId });
+                    table.PrimaryKey("PK_GameSpecificCategories", x => new { x.VideoGameId, x.CategoryId });
                     table.ForeignKey(
-                        name: "FK_VideoGameCategories_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
+                        name: "FK_GameSpecificCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_VideoGameCategories_VideoGames_VideoGamesId",
-                        column: x => x.VideoGamesId,
+                        name: "FK_GameSpecificCategories_VideoGames_VideoGameId",
+                        column: x => x.VideoGameId,
                         principalTable: "VideoGames",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -73,16 +75,16 @@ namespace TT2_Exam.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoGameCategories_VideoGamesId",
-                table: "VideoGameCategories",
-                column: "VideoGamesId");
+                name: "IX_GameSpecificCategories_CategoryId",
+                table: "GameSpecificCategories",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "VideoGameCategories");
+                name: "GameSpecificCategories");
 
             migrationBuilder.DropTable(
                 name: "Categories");
