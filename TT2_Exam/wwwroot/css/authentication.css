@@ -1,0 +1,33 @@
+.auth-form input {
+    color: white;
+    background-color: #232557;
+    border: 0;
+}
+
+.auth-form input:hover {
+    background-color: #27286c;
+}
+
+.auth-form input:focus {
+    color: white;
+    background-color: #232557;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.auth-form label {
+    color: #8c8c8c;
+}
+
+.auth-form button {
+    color: #b8b8b8;
+    border: none;
+    background-color: #180b35;
+}
+
+.auth-form button:hover {
+    border: none;
+    background-color: #1f0f45;
+}

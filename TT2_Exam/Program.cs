@@ -1,9 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using TT2_Exam.Data;
 using Microsoft.EntityFrameworkCore;
-
-
-using TT2_Exam.Data;
-using Microsoft.EntityFrameworkCore;
+using TT2_Exam.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +14,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     ));
 
+builder.Services.AddDefaultIdentity<UserModel>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
 // ---------- Build App ----------
 var app = builder.Build();
 
@@ -24,14 +26,17 @@ using (var scope = app.Services.CreateScope())
 {   
     
     var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<AppDbContext>();
     
-    // Rebuilding the database every launch for testing
+    var dbContext = services.GetRequiredService<AppDbContext>();
+    var userManager = services.GetRequiredService<UserManager<UserModel>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
     if (app.Environment.IsDevelopment())
     {
         dbContext.Database.EnsureDeleted();
         dbContext.Database.Migrate();
-        DataSeeder.Seed(dbContext); 
+        
+        await DataSeeder.SeedAsync(dbContext, userManager, roleManager);
     }
 
 }
@@ -47,6 +52,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 // ---------- Configure Routing ----------
@@ -57,6 +63,10 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapDefaultControllerRoute();
+
+app.MapRazorPages();
 
 // ---------- Run the App ----------
 app.Run();

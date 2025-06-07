@@ -46,6 +46,7 @@ namespace TT2_Exam.Controllers
 
             var videoGameModel = await _context.VideoGames
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (videoGameModel == null)
             {
                 return NotFound();
@@ -69,8 +70,10 @@ namespace TT2_Exam.Controllers
         {
             if (categoryIds is { Count: > 0 })
             {
-                query = query.Where(g =>
-                    g.GameSpecificCategories.Any(vc => categoryIds.Contains(vc.CategoryId)));
+                query = query
+                    .Where(g =>
+                        g.GameSpecificCategories
+                            .Count(gc => categoryIds.Contains(gc.CategoryId)) == categoryIds.Count);
             }
             return query;
         }

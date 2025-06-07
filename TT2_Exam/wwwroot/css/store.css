@@ -1,0 +1,68 @@
+.store-left {
+    color: #9da6df;
+}
+
+.store-top input {
+    color: white;
+    background-color: #121332;
+    border: 0;
+}
+
+.store-top input:hover {
+    background-color: #1c1d49;
+}
+
+.store-top input:focus {
+    color: white;
+    background-color: #1c1d49;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.store-middle {
+    background-color: rgba(0, 0, 0, 0.1);
+    min-height: 80vh;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.store-card {
+    background-color: #251a42;
+    color: white;
+    border-color: #0d173c !important;
+    border-style: solid !important;
+}
+
+.store-card:hover {
+    background-color: #17102b;
+}
+
+.store-right {
+    color: #9da6df;
+}
+
+.form-check-input {
+    background-color: #d3d3d3;
+}
+
+.form-check-input:checked {
+    background-color: #131b2c;
+    border: none;
+}
+
+.form-check-input:hover {
+    background-color: #686a75;
+}
+
+.form-check-input:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.form-check-label, .form-check-input {
+    cursor: pointer;
+    user-select: none;
+}

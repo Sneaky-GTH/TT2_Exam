@@ -3,61 +3,79 @@
     ViewBag.Title = "Store";
 }
 
-<div class="container mt-4">
-    <!-- Search Bar -->
+<div class="container">
     <form method="get" asp-action="Index">
-        <div class="input-group mb-3">
-            <input type="text" name="SearchQuery" value="@Model.SearchQuery" class="form-control" placeholder="Search games..." />
-            <button class="btn btn-primary" type="submit">Search</button>
+        <!-- Search Bar -->
+        <div class="row">
+            <div class="col-12 p-3 store-top">
+                    <div class="input-group">
+                        <input type="text" name="SearchQuery" value="@Model.SearchQuery" class="form-control" placeholder="Search games..." />
+                        <button class="btn btn-dark text-white" type="submit">Search</button>
+                    </div>
+            </div>
         </div>
-    </form>
 
-    <div class="row">
-        <!-- Left Sidebar: Categories -->
-        <div class="col-md-2">
-            <h5>Categories</h5>
-            <form method="get" asp-action="Index">
-                @foreach (var category in Model.AvailableCategories)
+        <div class="row">
+            <!-- Left Sidebar: Categories -->
+            <div class="col-md-2 store-left p-3">
+                <h5>Categories</h5>
+                @foreach (var category in Model.AvailableCategories.OrderBy(c => c.Name))
                 {
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="SelectedCategoryIds" value="@category.Id"
+                        <input class="form-check-input" type="checkbox" name="SelectedCategoryIds" onchange="this.form.submit()" value="@category.Id"
                                @(Model.SelectedCategoryIds.Contains(category.Id) ? "checked" : "") />
                         <label class="form-check-label">@category.Name</label>
                     </div>
                 }
-                <button class="btn btn-sm btn-outline-primary mt-2" type="submit">Apply</button>
-            </form>
-        </div>
+            </div>
 
-        <!-- Main Content: Video Game Cards -->
-        <div class="col-md-8">
-            @foreach (var game in Model.Games)
-            {
-                @await Html.PartialAsync("_VideoGameCard", game)
-            }
-        </div>
+            <!-- Main Content: Video Game Cards -->
+            <div class="col-md-8 store-middle p-0">
+                @foreach (var game in Model.Games)
+                {
+                    @await Html.PartialAsync("_VideoGameCard", game)
+                }
+            </div>
 
-        <!-- Right Sidebar: Sorting -->
-        <div class="col-md-2">
-            <h5>Sort By</h5>
-            <form method="get" asp-action="Index">
+            <!-- Right Sidebar: Sorting -->
+            <div class="col-md-2 store-right p-3">
+                <h5>Sort By</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="SortBy" value="PriceAsc" 
+                    <input class="form-check-input" type="radio" name="SortBy" onchange="this.form.submit()" value="PriceAsc" 
                            @(Model.SortBy == "PriceAsc" ? "checked" : "") />
                     <label class="form-check-label">Price (Low to High)</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="SortBy" value="PriceDesc" 
+                    <input class="form-check-input" type="radio" name="SortBy" onchange="this.form.submit()" value="PriceDesc" 
                            @(Model.SortBy == "PriceDesc" ? "checked" : "") />
                     <label class="form-check-label">Price (High to Low)</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="SortBy" value="Title" 
+                    <input class="form-check-input" type="radio" name="SortBy" onchange="this.form.submit()" value="Title" 
                            @(Model.SortBy == "Title" ? "checked" : "") />
                     <label class="form-check-label">Title</label>
                 </div>
-                <button class="btn btn-sm btn-outline-primary mt-2" type="submit">Sort</button>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/store.css" />
+}
+
+@section Scripts {
+    <script>
+    let debounceTimer;
+    document.querySelectorAll('.form-check-input').forEach(input => {
+        input.addEventListener('change', function () {
+            const form = this.form;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                form.submit();
+            }, 300); // wait 300ms after last change
+        });
+    });
+</script>
+}

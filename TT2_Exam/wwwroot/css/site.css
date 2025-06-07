@@ -22,10 +22,12 @@ header {
 }
 
 header a:link, header a:visited {
+  text-decoration: none;
   color: #d5dbea;
 }
 
-header .nav-link:hover {
+header .nav-link:hover, header .nav-link:focus {
+  text-decoration: none;
   color: #84a9bf;
 }
 
@@ -35,7 +37,7 @@ header .logo {
 }
 
 body {
-  background: linear-gradient(to right, #274368, #5f1f78);
+  background: #274368 linear-gradient(to right, #274368, #5f1f78);
 }
 
 footer {
@@ -48,6 +50,22 @@ footer a:link, footer a:visited {
   color: #81829e;
 }
 
-footer a:hover {
+footer a:hover, footer a:active {
+  text-decoration: none;
   color: #84a9bf;
+}
+
+a:link {
+  color: #190937;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #1d1737;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  color: #1d1051;
+  text-decoration: none;
 }
