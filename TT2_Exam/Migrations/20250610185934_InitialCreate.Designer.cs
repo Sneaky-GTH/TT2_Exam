@@ -12,8 +12,8 @@ using TT2_Exam.Data;
 namespace TT2_Exam.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250609085517_InititalCreate")]
-    partial class InititalCreate
+    [Migration("20250610185934_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,6 +194,24 @@ namespace TT2_Exam.Migrations
                     b.ToTable("GameSpecificCategories");
                 });
 
+            modelBuilder.Entity("TT2_Exam.Models.UserLibraryItem", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("VideoGameId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("UserId", "VideoGameId");
+
+                    b.HasIndex("VideoGameId");
+
+                    b.ToTable("UserLibraryItem");
+                });
+
             modelBuilder.Entity("TT2_Exam.Models.UserModel", b =>
                 {
                     b.Property<string>("Id")
@@ -271,8 +289,17 @@ namespace TT2_Exam.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(10000)
+                        .HasColumnType("varchar(10000)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("PublisherId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime(6)");
@@ -293,6 +320,8 @@ namespace TT2_Exam.Migrations
                         .HasColumnType("varchar(64)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("VideoGames");
                 });
@@ -367,14 +396,53 @@ namespace TT2_Exam.Migrations
                     b.Navigation("VideoGame");
                 });
 
+            modelBuilder.Entity("TT2_Exam.Models.UserLibraryItem", b =>
+                {
+                    b.HasOne("TT2_Exam.Models.UserModel", "User")
+                        .WithMany("Library")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TT2_Exam.Models.VideoGameModel", "VideoGame")
+                        .WithMany("Owners")
+                        .HasForeignKey("VideoGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("VideoGame");
+                });
+
+            modelBuilder.Entity("TT2_Exam.Models.VideoGameModel", b =>
+                {
+                    b.HasOne("TT2_Exam.Models.UserModel", "Publisher")
+                        .WithMany("PublishedGames")
+                        .HasForeignKey("PublisherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Publisher");
+                });
+
             modelBuilder.Entity("TT2_Exam.Models.CategoryModel", b =>
                 {
                     b.Navigation("GameSpecificCategories");
                 });
 
+            modelBuilder.Entity("TT2_Exam.Models.UserModel", b =>
+                {
+                    b.Navigation("Library");
+
+                    b.Navigation("PublishedGames");
+                });
+
             modelBuilder.Entity("TT2_Exam.Models.VideoGameModel", b =>
                 {
                     b.Navigation("GameSpecificCategories");
+
+                    b.Navigation("Owners");
                 });
 #pragma warning restore 612, 618
         }

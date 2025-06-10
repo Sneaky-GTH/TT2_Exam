@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using TT2_Exam.Data;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,8 @@ builder.Services.AddDefaultIdentity<UserModel>()
 builder.Services.AddScoped<IMarkdownFormatter, MarkdownFormatter>();
 
 builder.Services.AddAuthorization(AuthorizationPolicies.AddPolicies);
+builder.Services.AddScoped<IAuthorizationHandler, IsPublisherHandler>();
+builder.Services.AddHttpContextAccessor();
 
 // ---------- Build App ----------
 var app = builder.Build();

@@ -31,6 +31,25 @@ namespace TT2_Exam.Data
                 .HasOne(vc => vc.Category)
                 .WithMany(c => c.GameSpecificCategories)
                 .HasForeignKey(vc => vc.CategoryId);
+            
+            modelBuilder.Entity<VideoGameModel>()
+                .HasOne(v => v.Publisher)
+                .WithMany(u => u.PublishedGames)
+                .HasForeignKey(v => v.PublisherId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<UserLibraryItem>()
+                .HasKey(ul => new { ul.UserId, ul.VideoGameId });
+
+            modelBuilder.Entity<UserLibraryItem>()
+                .HasOne(ul => ul.User)
+                .WithMany(u => u.Library)
+                .HasForeignKey(ul => ul.UserId);
+
+            modelBuilder.Entity<UserLibraryItem>()
+                .HasOne(ul => ul.VideoGame)
+                .WithMany(v => v.Owners)
+                .HasForeignKey(ul => ul.VideoGameId);
         }
 
     }

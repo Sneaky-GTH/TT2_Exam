@@ -64,7 +64,7 @@ public static class DataSeeder
         }
         
         // seed a publisher user
-        const string pubUsername = "Big Publishing";
+        const string pubUsername = "BigPublishing";
         const string pubEmail = "contact@publishing.big";
         const string pubPassword = "User$1";
         if (await userManager.FindByEmailAsync(pubEmail) is null)
@@ -75,18 +75,17 @@ public static class DataSeeder
                 Email = pubEmail,
             };
 
-            var result = await userManager.CreateAsync(normalUser, userPassword);
+            var result = await userManager.CreateAsync(normalUser, pubPassword);
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(normalUser, "Publisher");
             }
         }
         
-        // seed a second user
-        const string pubUsername2 = "Small Publishing";
+        const string pubUsername2 = "SmallPublishing";
         const string pubEmail2 = "contact@publishing.small";
         const string pubPassword2 = "User$1";
-        if (await userManager.FindByEmailAsync(pubEmail) is null)
+        if (await userManager.FindByEmailAsync(pubEmail2) is null)
         {
             var normalUser = new UserModel
             {
@@ -94,15 +93,18 @@ public static class DataSeeder
                 Email = pubEmail2,
             };
 
-            var result = await userManager.CreateAsync(normalUser, userPassword);
+            var result = await userManager.CreateAsync(normalUser, pubPassword2);
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(normalUser, "Publisher");
             }
         }
 
-        // Return if already seeded
-        if (context.VideoGames.Any()) return;
+        var publisherOne = await userManager.FindByEmailAsync(pubEmail);
+        var publisherOneId = publisherOne.Id;
+        
+        var publisherTwo = await userManager.FindByEmailAsync(pubEmail2);
+        var publisherTwoId = publisherTwo.Id;
 
         var categories = new List<CategoryModel>
         {
@@ -124,22 +126,22 @@ public static class DataSeeder
         {
             new VideoGameModel
             {
-                Title = "Factorio", Price = 35.00M, ShortDescription = "A factory building game.", ThumbnailPath = "~/img/factorio_thumbnail.jpg",
+                Title = "Factorio", PublisherId = publisherOneId, Price = 35.00M, ShortDescription = "A factory building game.", ThumbnailPath = "~/img/factorio_thumbnail.jpg",
                 Description = "**Factorio** is a game in which you build and maintain factories. You will be mining resources, researching technologies, building infrastructure, automating production and fighting enemies. In the beginning you will find yourself chopping trees, mining ores and crafting mechanical arms and transport belts by hand, but in short time you can become an industrial powerhouse, with huge solar fields, oil refining and cracking, manufacture and deployment of construction and logistic robots, all for your resource needs. However this heavy exploitation of the planet's resources does not sit nicely with the locals, so you will have to be prepared to defend yourself and your machine empire." +
                               "\n\n" +
                               "Join forces with other players in cooperative Multiplayer, create huge factories, collaborate and delegate tasks between you and your friends. Add mods to increase your enjoyment, from small tweak and helper mods to complete game overhauls, Factorio's ground-up Modding support has allowed content creators from around the world to design interesting and innovative features. While the core gameplay is in the form of the freeplay scenario, there are a range of interesting challenges in the form of Scenarios. If you don't find any maps or scenarios you enjoy, you can create your own with the in-game **Map Editor**, place down entities, enemies, and terrain in any way you like, and even add your own custom script to make for interesting gameplay."
             },
-            new VideoGameModel { Title = "Hi-Fi Rush", Price = 39.99M, ShortDescription = "Beat up robots to the rhythm!", ThumbnailPath = "~/img/hifirush_thumbnail.jpg"},
-            new VideoGameModel { Title = "Cyberpunk 2077", Price = 49.99M, ShortDescription = "Explore Night City - become a legend.", ThumbnailPath = "~/img/cyberpunk_thumbnail.jpg"},
-            new VideoGameModel { Title = "Yakuza 0", Price = 19.99M, ShortDescription = "The glitz, glamour, and unbridled decadence of the 80s are back in Yakuza 0.", ThumbnailPath = "~/img/yakuza0_thumbnail.png"},
-            new VideoGameModel { Title = "Fallout: New Vegas", Price = 9.99M, ShortDescription = "Explore post-apocalyptic America and choose the fate of New Vegas.", ThumbnailPath = "~/img/fnv_thumbnail.jpg"},
-            new VideoGameModel { Title = "Hades", Price = 24.99M, ShortDescription = "Fight. Die. Repeat. Reach the Surface.", ThumbnailPath = "~/img/hades_thumbnail.jpeg"},
-            new VideoGameModel { Title = "Balatro", Price = 9.99M, ShortDescription = "A poker roguelike.", ThumbnailPath = "~/img/balatro_thumbnail.png"},
-            new VideoGameModel { Title = "HELLDIVERS™ 2", Price = 39.99M, ShortDescription = "For Super-Earth!", ThumbnailPath = "~/img/hd2_thumbnail.jpg"},
-            new VideoGameModel { Title = "Hades II", Price = 24.99M, ShortDescription = "The sequel to 'Hades' is finally here!", ThumbnailPath = "~/img/hades2_thumbnail.jpg"},
-            new VideoGameModel { Title = "Disco Elysium", Price = 26.95M, ShortDescription = "Be a detective and solve the case, all while trying not to die from alcoholism.", ThumbnailPath = "~/img/discoelysium_thumbnail.jpg"},
-            new VideoGameModel { Title = "Nine Sols", Price = 19.99M, ThumbnailPath = "~/img/ninesols_thumbnail.jpg"},
-            new VideoGameModel { Title = "GUILTY GEAR -STRIVE-", Price = 29.99M, ThumbnailPath = "~/img/ggst_thumbnail.jpg"},
+            new VideoGameModel { Title = "Hi-Fi Rush", PublisherId = publisherOneId, Price = 39.99M, ShortDescription = "Beat up robots to the rhythm!", ThumbnailPath = "~/img/hifirush_thumbnail.jpg"},
+            new VideoGameModel { Title = "Cyberpunk 2077", PublisherId = publisherOneId, Price = 49.99M, ShortDescription = "Explore Night City - become a legend.", ThumbnailPath = "~/img/cyberpunk_thumbnail.jpg"},
+            new VideoGameModel { Title = "Yakuza 0", PublisherId = publisherOneId, Price = 19.99M, ShortDescription = "The glitz, glamour, and unbridled decadence of the 80s are back in Yakuza 0.", ThumbnailPath = "~/img/yakuza0_thumbnail.png"},
+            new VideoGameModel { Title = "Fallout: New Vegas", PublisherId = publisherOneId, Price = 9.99M, ShortDescription = "Explore post-apocalyptic America and choose the fate of New Vegas.", ThumbnailPath = "~/img/fnv_thumbnail.jpg"},
+            new VideoGameModel { Title = "Hades", Price = 24.99M, PublisherId = publisherOneId, ShortDescription = "Fight. Die. Repeat. Reach the Surface.", ThumbnailPath = "~/img/hades_thumbnail.jpeg"},
+            new VideoGameModel { Title = "Balatro", Price = 9.99M, PublisherId = publisherTwoId, ShortDescription = "A poker roguelike.", ThumbnailPath = "~/img/balatro_thumbnail.png"},
+            new VideoGameModel { Title = "HELLDIVERS™ 2", PublisherId = publisherTwoId, Price = 39.99M, ShortDescription = "For Super-Earth!", ThumbnailPath = "~/img/hd2_thumbnail.jpg"},
+            new VideoGameModel { Title = "Hades II", PublisherId = publisherTwoId, Price = 24.99M, ShortDescription = "The sequel to 'Hades' is finally here!", ThumbnailPath = "~/img/hades2_thumbnail.jpg"},
+            new VideoGameModel { Title = "Disco Elysium", PublisherId = publisherTwoId, Price = 26.95M, ShortDescription = "Be a detective and solve the case, all while trying not to die from alcoholism.", ThumbnailPath = "~/img/discoelysium_thumbnail.jpg"},
+            new VideoGameModel { Title = "Nine Sols", PublisherId = publisherTwoId, Price = 19.99M, ThumbnailPath = "~/img/ninesols_thumbnail.jpg"},
+            new VideoGameModel { Title = "GUILTY GEAR -STRIVE-", PublisherId = publisherTwoId, Price = 29.99M, ThumbnailPath = "~/img/ggst_thumbnail.jpg"},
         };
 
         context.VideoGames.AddRange(games);

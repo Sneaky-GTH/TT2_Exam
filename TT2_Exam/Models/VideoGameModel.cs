@@ -20,6 +20,12 @@ namespace TT2_Exam.Models
 
         [Required] public ICollection<GameSpecificCategoryModel> GameSpecificCategories { get; set; } =
             new List<GameSpecificCategoryModel>();
+        
+        [Required]
+        public string PublisherId { get; set; } = string.Empty;
+        public UserModel Publisher { get; set; } = null!;
+        
+        public ICollection<UserLibraryItem> Owners { get; set; } = new List<UserLibraryItem>();
 
     }
 }

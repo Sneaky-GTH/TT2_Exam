@@ -24,6 +24,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Store" asp-action="Index">Store</a>
                             </li>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Publisher"))
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="VideoGame" asp-action="Index">Publishing</a>
+                            </li>
+                            }
                         </ul>
                     </div>
                 </div>

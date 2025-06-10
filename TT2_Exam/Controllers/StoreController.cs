@@ -49,7 +49,8 @@ namespace TT2_Exam.Controllers
 
             var videoGameModel = await _context.VideoGames
                 .Include(v => v.GameSpecificCategories)
-                .ThenInclude(gc => gc.Category)
+                    .ThenInclude(gc => gc.Category)
+                .Include(v => v.Publisher)
                 .FirstOrDefaultAsync(v => v.Id == id);
             
             if (videoGameModel == null)

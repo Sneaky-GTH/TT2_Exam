@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,32 @@ namespace TT2_Exam.Areas.Admin.Controllers
         }
 
         // GET: Admin/VideoGame
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = AuthorizationPolicies.RequirePublisher)]
         public async Task<IActionResult> Index()
-        {
-            return View(await _context.VideoGames.ToListAsync());
+        {   
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (User.IsInRole("Admin"))
+            {
+                var allGames = await _context.VideoGames
+                    .Include(v => v.Publisher)
+                    .ToListAsync();
+
+                return View(allGames);
+            }
+            else
+            {
+                var publisherGames = await _context.VideoGames
+                    .Include(v => v.Publisher)
+                    .Where(v => v.PublisherId == userId)
+                    .ToListAsync();
+
+                return View(publisherGames);
+            }
         }
 
         // GET: Admin/VideoGame/Details/5
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = "IsPublisher")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,7 +63,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         }
 
         // GET: Admin/VideoGame/Create
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = AuthorizationPolicies.RequirePublisher)]
         public IActionResult Create()
         {
             return View();
@@ -55,7 +74,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = AuthorizationPolicies.RequirePublisher)]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ReleaseDate,Price")] VideoGameModel videoGameModel)
         {
             if (ModelState.IsValid)
@@ -68,7 +87,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         }
 
         // GET: Admin/VideoGame/Edit/5
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = "IsPublisher")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,7 +108,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = "IsPublisher")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ReleaseDate,Price")] VideoGameModel videoGameModel)
         {
             if (id != videoGameModel.Id)
@@ -121,7 +140,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         }
 
         // GET: Admin/VideoGame/Delete/5
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = "IsPublisher")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,7 +161,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         // POST: Admin/VideoGame/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+        [Authorize(Policy = "IsPublisher")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var videoGameModel = await _context.VideoGames.FindAsync(id);
