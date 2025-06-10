@@ -2,16 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TT2_Exam.Data;
 using TT2_Exam.Models;
+using TT2_Exam.Utility;
 
 namespace TT2_Exam.Controllers
 {
     public class StoreController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IMarkdownFormatter _markdownFormatter;
 
-        public StoreController(AppDbContext context)
+        public StoreController(AppDbContext context, IMarkdownFormatter markdownFormatter)
         {
             _context = context;
+            _markdownFormatter = markdownFormatter;
         }
         // GET: StoreController
         public IActionResult Index(string searchQuery, List<int> selectedCategoryIds, string sortBy)
@@ -45,7 +48,9 @@ namespace TT2_Exam.Controllers
             }
 
             var videoGameModel = await _context.VideoGames
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(v => v.GameSpecificCategories)
+                .ThenInclude(gc => gc.Category)
+                .FirstOrDefaultAsync(v => v.Id == id);
             
             if (videoGameModel == null)
             {

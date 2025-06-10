@@ -38,6 +38,7 @@ header .logo {
 
 body {
   background: #274368 linear-gradient(to right, #274368, #5f1f78);
+  color: #cdbada;
 }
 
 footer {
@@ -56,16 +57,78 @@ footer a:hover, footer a:active {
 }
 
 a:link {
-  color: #190937;
+  color: #8970b3;
   text-decoration: none;
 }
 
 a:visited {
-  color: #1d1737;
+  color: #5c4ab6;
   text-decoration: none;
 }
 
 a:hover, a:active {
-  color: #1d1051;
+  color: #594c98;
   text-decoration: none;
+}
+
+th, td {
+  color: #cdbada;
+}
+
+input, .form-control {
+  color: white;
+  background-color: #232557;
+  border: 0;
+}
+
+input:disabled, .form-control:disabled {
+  color: gray;
+  background-color: #232557;
+  border: 0;
+}
+
+input:hover, .form-control:hover {
+  background-color: #27286c;
+}
+
+input:focus, .form-control:focus, input:active, .form-control:active {
+  color: white;
+  background-color: #232557;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+label, .form-label {
+  color: #8c8c8c;
+}
+
+button, .btn, .btn-link {
+  text-decoration: none;
+  color: #b8b8b8;
+  border: none;
+  background-color: #180b35;
+}
+
+.btn-link:hover {
+  color: white;
+}
+
+button:hover, .bth:hover, .btn-primary:hover  {
+  border: none;
+  color: white;
+  background-color: #1f0f45;
+}
+
+.user-nav .nav-link {
+  color: #cdbada;
+}
+
+.user-nav .nav-link:hover, .user-nav .nav-link:focus {
+  color: #9b89aa;
+}
+
+.user-nav .nav-link.active {
+  background-color: #291c49;
 }

@@ -12,8 +12,8 @@ using TT2_Exam.Data;
 namespace TT2_Exam.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250607124351_AddIdentitySchema")]
-    partial class AddIdentitySchema
+    [Migration("20250609085517_InititalCreate")]
+    partial class InititalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -206,6 +206,11 @@ namespace TT2_Exam.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
@@ -266,21 +271,26 @@ namespace TT2_Exam.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2047)
-                        .HasColumnType("varchar(2047)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("ShortDescription")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ThumbnailPath")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
                     b.HasKey("Id");
 

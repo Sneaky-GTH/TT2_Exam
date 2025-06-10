@@ -270,8 +270,8 @@ namespace TT2_Exam.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2047)
-                        .HasColumnType("varchar(2047)");
+                        .HasMaxLength(10000)
+                        .HasColumnType("varchar(10000)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
@@ -279,10 +279,20 @@ namespace TT2_Exam.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("ShortDescription")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ThumbnailPath")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
                     b.HasKey("Id");
 

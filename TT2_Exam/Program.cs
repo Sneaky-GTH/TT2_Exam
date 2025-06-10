@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using TT2_Exam.Data;
 using Microsoft.EntityFrameworkCore;
 using TT2_Exam.Models;
+using TT2_Exam.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddDefaultIdentity<UserModel>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddScoped<IMarkdownFormatter, MarkdownFormatter>();
+
+builder.Services.AddAuthorization(AuthorizationPolicies.AddPolicies);
 
 // ---------- Build App ----------
 var app = builder.Build();

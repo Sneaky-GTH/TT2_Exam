@@ -12,10 +12,10 @@ public static class DataSeeder
         RoleManager<IdentityRole> roleManager)
     {
         
-        context.Database.Migrate();
+        await context.Database.MigrateAsync();
         
-        // === 1. Seed Roles ===
-        string[] roles = { "Admin", "User" };
+        // seed roles
+        string[] roles = { "Admin", "User", "Publisher" };
 
         foreach (var role in roles)
         {
@@ -25,10 +25,10 @@ public static class DataSeeder
             }
         }
 
-        // === 2. Seed Default Admin User ===
-        string adminUsername = "admin";
-        string adminEmail = "admin@admin.admin";
-        string adminPassword = "Admin$1";
+        // seed admin
+        const string adminUsername = "admin";
+        const string adminEmail = "admin@admin.admin";
+        const string adminPassword = "Admin$1";
         if (await userManager.FindByEmailAsync(adminEmail) is null)
         {
             var adminUser = new UserModel
@@ -43,11 +43,11 @@ public static class DataSeeder
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
         }
-
-        // === 3. Seed Default Normal User ===
-        string userUsername = "user";
-        string userEmail = "user@example.com";
-        string userPassword = "User$1";
+        
+        // seed a default user
+        const string userUsername = "user";
+        const string userEmail = "user@example.com";
+        const string userPassword = "User$1";
         if (await userManager.FindByEmailAsync(userEmail) is null)
         {
             var normalUser = new UserModel
@@ -62,6 +62,44 @@ public static class DataSeeder
                 await userManager.AddToRoleAsync(normalUser, "User");
             }
         }
+        
+        // seed a publisher user
+        const string pubUsername = "Big Publishing";
+        const string pubEmail = "contact@publishing.big";
+        const string pubPassword = "User$1";
+        if (await userManager.FindByEmailAsync(pubEmail) is null)
+        {
+            var normalUser = new UserModel
+            {
+                UserName = pubUsername,
+                Email = pubEmail,
+            };
+
+            var result = await userManager.CreateAsync(normalUser, userPassword);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(normalUser, "Publisher");
+            }
+        }
+        
+        // seed a second user
+        const string pubUsername2 = "Small Publishing";
+        const string pubEmail2 = "contact@publishing.small";
+        const string pubPassword2 = "User$1";
+        if (await userManager.FindByEmailAsync(pubEmail) is null)
+        {
+            var normalUser = new UserModel
+            {
+                UserName = pubUsername2,
+                Email = pubEmail2,
+            };
+
+            var result = await userManager.CreateAsync(normalUser, userPassword);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(normalUser, "Publisher");
+            }
+        }
 
         // Return if already seeded
         if (context.VideoGames.Any()) return;
@@ -69,58 +107,64 @@ public static class DataSeeder
         var categories = new List<CategoryModel>
         {
             new CategoryModel { Name = "RPG" },
-            new CategoryModel { Name = "Simulation" },
             new CategoryModel { Name = "Indie" },
             new CategoryModel { Name = "Action" },
-            new CategoryModel { Name = "Farming" },
             new CategoryModel { Name = "Factory" },
+            new CategoryModel { Name = "Story" },
+            new CategoryModel { Name = "Fighting Game" },
+            new CategoryModel { Name = "Roguelike" },
+            new CategoryModel { Name = "Apocalypse" },
+            new CategoryModel { Name = "Shooter" },
         };
 
         context.Categories.AddRange(categories);
-        context.SaveChanges(); // Save so that categories get IDs
+        await context.SaveChangesAsync(); // Save so that categories get IDs
 
         var games = new List<VideoGameModel>
         {
-            new VideoGameModel { Title = "Elden Ring", Price = 59.99M },
-            new VideoGameModel { Title = "Stardew Valley", Price = 14.99M },
-            new VideoGameModel { Title = "Factorio", Price = 29.99M },
-            new VideoGameModel { Title = "The Witcher 3: Wild Hunt", Price = 39.99M },
-            new VideoGameModel { Title = "Cyberpunk 2077", Price = 49.99M },
-            new VideoGameModel { Title = "Hades", Price = 24.99M },
-            new VideoGameModel { Title = "Celeste", Price = 19.99M },
-            new VideoGameModel { Title = "Dark Souls III", Price = 39.99M },
-            new VideoGameModel { Title = "Among Us", Price = 4.99M },
-            new VideoGameModel { Title = "Minecraft", Price = 26.95M },
-            new VideoGameModel { Title = "Terraria", Price = 9.99M },
-            new VideoGameModel { Title = "Slay the Spire", Price = 24.99M },
-            new VideoGameModel { Title = "Portal 2", Price = 9.99M },
-            new VideoGameModel { Title = "Cuphead", Price = 19.99M },
-            new VideoGameModel { Title = "Hollow Knight", Price = 14.99M },
-            new VideoGameModel { Title = "Overwatch", Price = 39.99M },
-            new VideoGameModel { Title = "DOOM Eternal", Price = 59.99M },
-            new VideoGameModel { Title = "Red Dead Redemption 2", Price = 59.99M },
-            new VideoGameModel { Title = "The Legend of Zelda: Breath of the Wild", Price = 59.99M },
-            new VideoGameModel { Title = "Animal Crossing: New Horizons", Price = 59.99M },
-            new VideoGameModel { Title = "Final Fantasy VII Remake", Price = 59.99M },
-            new VideoGameModel { Title = "Ghost of Tsushima", Price = 59.99M },
-            new VideoGameModel { Title = "Valorant", Price = 0.00M },
-            new VideoGameModel { Title = "League of Legends", Price = 0.00M },
-            new VideoGameModel { Title = "Fortnite", Price = 0.00M },
-            new VideoGameModel { Title = "Apex Legends", Price = 0.00M },
-            new VideoGameModel { Title = "Metro Exodus", Price = 39.99M },
-            new VideoGameModel { Title = "Resident Evil Village", Price = 59.99M },
-            new VideoGameModel { Title = "Assassin's Creed Valhalla", Price = 59.99M },
-            new VideoGameModel { Title = "Fall Guys", Price = 19.99M },
+            new VideoGameModel
+            {
+                Title = "Factorio", Price = 35.00M, ShortDescription = "A factory building game.", ThumbnailPath = "~/img/factorio_thumbnail.jpg",
+                Description = "**Factorio** is a game in which you build and maintain factories. You will be mining resources, researching technologies, building infrastructure, automating production and fighting enemies. In the beginning you will find yourself chopping trees, mining ores and crafting mechanical arms and transport belts by hand, but in short time you can become an industrial powerhouse, with huge solar fields, oil refining and cracking, manufacture and deployment of construction and logistic robots, all for your resource needs. However this heavy exploitation of the planet's resources does not sit nicely with the locals, so you will have to be prepared to defend yourself and your machine empire." +
+                              "\n\n" +
+                              "Join forces with other players in cooperative Multiplayer, create huge factories, collaborate and delegate tasks between you and your friends. Add mods to increase your enjoyment, from small tweak and helper mods to complete game overhauls, Factorio's ground-up Modding support has allowed content creators from around the world to design interesting and innovative features. While the core gameplay is in the form of the freeplay scenario, there are a range of interesting challenges in the form of Scenarios. If you don't find any maps or scenarios you enjoy, you can create your own with the in-game **Map Editor**, place down entities, enemies, and terrain in any way you like, and even add your own custom script to make for interesting gameplay."
+            },
+            new VideoGameModel { Title = "Hi-Fi Rush", Price = 39.99M, ShortDescription = "Beat up robots to the rhythm!", ThumbnailPath = "~/img/hifirush_thumbnail.jpg"},
+            new VideoGameModel { Title = "Cyberpunk 2077", Price = 49.99M, ShortDescription = "Explore Night City - become a legend.", ThumbnailPath = "~/img/cyberpunk_thumbnail.jpg"},
+            new VideoGameModel { Title = "Yakuza 0", Price = 19.99M, ShortDescription = "The glitz, glamour, and unbridled decadence of the 80s are back in Yakuza 0.", ThumbnailPath = "~/img/yakuza0_thumbnail.png"},
+            new VideoGameModel { Title = "Fallout: New Vegas", Price = 9.99M, ShortDescription = "Explore post-apocalyptic America and choose the fate of New Vegas.", ThumbnailPath = "~/img/fnv_thumbnail.jpg"},
+            new VideoGameModel { Title = "Hades", Price = 24.99M, ShortDescription = "Fight. Die. Repeat. Reach the Surface.", ThumbnailPath = "~/img/hades_thumbnail.jpeg"},
+            new VideoGameModel { Title = "Balatro", Price = 9.99M, ShortDescription = "A poker roguelike.", ThumbnailPath = "~/img/balatro_thumbnail.png"},
+            new VideoGameModel { Title = "HELLDIVERS™ 2", Price = 39.99M, ShortDescription = "For Super-Earth!", ThumbnailPath = "~/img/hd2_thumbnail.jpg"},
+            new VideoGameModel { Title = "Hades II", Price = 24.99M, ShortDescription = "The sequel to 'Hades' is finally here!", ThumbnailPath = "~/img/hades2_thumbnail.jpg"},
+            new VideoGameModel { Title = "Disco Elysium", Price = 26.95M, ShortDescription = "Be a detective and solve the case, all while trying not to die from alcoholism.", ThumbnailPath = "~/img/discoelysium_thumbnail.jpg"},
+            new VideoGameModel { Title = "Nine Sols", Price = 19.99M, ThumbnailPath = "~/img/ninesols_thumbnail.jpg"},
+            new VideoGameModel { Title = "GUILTY GEAR -STRIVE-", Price = 29.99M, ThumbnailPath = "~/img/ggst_thumbnail.jpg"},
         };
 
         context.VideoGames.AddRange(games);
-        context.SaveChanges(); // Save so that games get IDs
+        await context.SaveChangesAsync(); // Save so that games get IDs
         
         context.GameSpecificCategories.AddRange(
             new GameSpecificCategoryModel
             {
-                VideoGameId = games.First(g => g.Title == "Elden Ring").Id,
+                VideoGameId = games.First(g => g.Title == "Cyberpunk 2077").Id,
                 CategoryId = categories.First(c => c.Name == "RPG").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Cyberpunk 2077").Id,
+                CategoryId = categories.First(c => c.Name == "Shooter").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Fallout: New Vegas").Id,
+                CategoryId = categories.First(c => c.Name == "RPG").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Fallout: New Vegas").Id,
+                CategoryId = categories.First(c => c.Name == "Apocalypse").Id
             },
             new GameSpecificCategoryModel
             {
@@ -129,26 +173,96 @@ public static class DataSeeder
             },
             new GameSpecificCategoryModel
             {
-                VideoGameId = games.First(g => g.Title == "Elden Ring").Id,
-                CategoryId = categories.First(c => c.Name == "Action").Id
-            },
-            new GameSpecificCategoryModel
-            {
                 VideoGameId = games.First(g => g.Title == "Factorio").Id,
+                CategoryId = categories.First(c => c.Name == "Indie").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Hi-Fi Rush").Id,
                 CategoryId = categories.First(c => c.Name == "Action").Id
             },
             new GameSpecificCategoryModel
             {
-                VideoGameId = games.First(g => g.Title == "Stardew Valley").Id,
-                CategoryId = categories.First(c => c.Name == "Farming").Id
+                VideoGameId = games.First(g => g.Title == "Hi-Fi Rush").Id,
+                CategoryId = categories.First(c => c.Name == "Indie").Id
             },
             new GameSpecificCategoryModel
             {
-                VideoGameId = games.First(g => g.Title == "Stardew Valley").Id,
+                VideoGameId = games.First(g => g.Title == "Yakuza 0").Id,
+                CategoryId = categories.First(c => c.Name == "RPG").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Yakuza 0").Id,
+                CategoryId = categories.First(c => c.Name == "Story").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Hades").Id,
+                CategoryId = categories.First(c => c.Name == "Roguelike").Id
+            },
+            new GameSpecificCategoryModel        
+            {
+                VideoGameId = games.First(g => g.Title == "Hades").Id,
+                CategoryId = categories.First(c => c.Name == "Action").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Hades").Id,
                 CategoryId = categories.First(c => c.Name == "Indie").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Hades II").Id,
+                CategoryId = categories.First(c => c.Name == "Roguelike").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Hades II").Id,
+                CategoryId = categories.First(c => c.Name == "Action").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Balatro").Id,
+                CategoryId = categories.First(c => c.Name == "Indie").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Balatro").Id,
+                CategoryId = categories.First(c => c.Name == "Roguelike").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Disco Elysium").Id,
+                CategoryId = categories.First(c => c.Name == "RPG").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Disco Elysium").Id,
+                CategoryId = categories.First(c => c.Name == "Story").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Nine Sols").Id,
+                CategoryId = categories.First(c => c.Name == "Indie").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "Nine Sols").Id,
+                CategoryId = categories.First(c => c.Name == "Action").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "HELLDIVERS™ 2").Id,
+                CategoryId = categories.First(c => c.Name == "Shooter").Id
+            },
+            new GameSpecificCategoryModel
+            {
+                VideoGameId = games.First(g => g.Title == "GUILTY GEAR -STRIVE-").Id,
+                CategoryId = categories.First(c => c.Name == "Fighting Game").Id
             }
         );
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 }

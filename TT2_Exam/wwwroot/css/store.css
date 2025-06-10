@@ -66,3 +66,15 @@
     cursor: pointer;
     user-select: none;
 }
+
+.detail-title {
+    background-color: rgba(37, 26, 66, 0.6);
+}
+
+.detail-image {
+    border: 0.5em solid #251a42;
+}
+
+div .detail-category {
+    background-color: rgba(15, 3, 34, 0.8) !important;
+}

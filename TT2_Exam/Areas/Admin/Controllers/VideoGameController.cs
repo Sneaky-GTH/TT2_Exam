@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TT2_Exam.Data;
 using TT2_Exam.Models;
+using TT2_Exam.Utility;
 
-namespace TT2_Exam.Areas.Admin
+namespace TT2_Exam.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class VideoGameController : Controller
@@ -21,12 +18,14 @@ namespace TT2_Exam.Areas.Admin
         }
 
         // GET: Admin/VideoGame
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public async Task<IActionResult> Index()
         {
             return View(await _context.VideoGames.ToListAsync());
         }
 
         // GET: Admin/VideoGame/Details/5
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,6 +44,7 @@ namespace TT2_Exam.Areas.Admin
         }
 
         // GET: Admin/VideoGame/Create
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +55,7 @@ namespace TT2_Exam.Areas.Admin
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ReleaseDate,Price")] VideoGameModel videoGameModel)
         {
             if (ModelState.IsValid)
@@ -67,6 +68,7 @@ namespace TT2_Exam.Areas.Admin
         }
 
         // GET: Admin/VideoGame/Edit/5
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,6 +89,7 @@ namespace TT2_Exam.Areas.Admin
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ReleaseDate,Price")] VideoGameModel videoGameModel)
         {
             if (id != videoGameModel.Id)
@@ -118,6 +121,7 @@ namespace TT2_Exam.Areas.Admin
         }
 
         // GET: Admin/VideoGame/Delete/5
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,6 +142,7 @@ namespace TT2_Exam.Areas.Admin
         // POST: Admin/VideoGame/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var videoGameModel = await _context.VideoGames.FindAsync(id);
@@ -154,5 +159,7 @@ namespace TT2_Exam.Areas.Admin
         {
             return _context.VideoGames.Any(e => e.Id == id);
         }
+        
+        
     }
 }

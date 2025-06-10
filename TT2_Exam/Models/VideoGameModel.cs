@@ -6,9 +6,13 @@ namespace TT2_Exam.Models
     {
         public int Id { get; set; }
 
-        [Required] [MaxLength(255)] public string Title { get; set; } = string.Empty;
+        [Required] [MaxLength(64)] public string Title { get; set; } = string.Empty;
         
-        [Required] [MaxLength(2047)] public string Description { get; set; } = string.Empty;
+        [MaxLength(255)] public string ShortDescription { get; set; } = string.Empty;
+        
+        [MaxLength(10000)] public string Description { get; set; } = string.Empty;
+        
+        [MaxLength(64)] public string ThumbnailPath { get; set; } = string.Empty;
         
         public DateTime ReleaseDate { get; set; }
         

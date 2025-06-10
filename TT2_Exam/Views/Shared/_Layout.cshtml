@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - TT2_Exam</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/aspform.css" asp-append-version="true"/>
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -17,7 +18,7 @@
     
     
     <!-- Body -->
-    <div class="container flex-grow-1">
+    <div class="flex-grow-1 container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
