@@ -1,4 +1,4 @@
-@model TT2_Exam.Models.VideoGameModel
+@model TT2_Exam.Models.VideoGameCreateViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,32 +10,59 @@
 <h4>VideoGameModel</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-md-4 w-50">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="VideoGame.Id" />
+            <input type="hidden" asp-for="VideoGame.PublisherId" />
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="VideoGame.Title" class="control-label"></label>
+                <input asp-for="VideoGame.Title" class="form-control"/>
+                <span asp-validation-for="VideoGame.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ShortDescription" class="control-label"></label>
-                <input asp-for="ShortDescription" class="form-control" />
-                <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                <label asp-for="VideoGame.ShortDescription" class="control-label"></label>
+                <input asp-for="VideoGame.ShortDescription" class="form-control"/>
+                <span asp-validation-for="VideoGame.ShortDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                <label asp-for="VideoGame.Description" class="control-label"></label>
+                <textarea asp-for="VideoGame.Description" class="long-description form-control"></textarea>
+                <span asp-validation-for="VideoGame.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label for="ThumbnailUpload">Upload Thumbnail Image (.jpg, .png only)</label>
+                <input type="file" name="ThumbnailUpload" id="ThumbnailUpload" class="form-control" accept=".jpg,.jpeg,.png"/>
+                <span asp-validation-for="ThumbnailUpload" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="VideoGame.Price" class="control-label"></label>
+                <input asp-for="VideoGame.Price" class="form-control"/>
+                <span asp-validation-for="VideoGame.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Categories</label>
+                <div class="checkbox-list overflow-scroll">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <div class="form-check">
+                            <input type="checkbox"
+                                   name="Categories[@Model.Categories.IndexOf(category)].IsSelected"
+                                   value="true"
+                                   class="form-check-input"
+                                   @(category.IsSelected ? "checked" : "")/>
+
+                            <input type="hidden"
+                                   name="Categories[@Model.Categories.IndexOf(category)].CategoryId"
+                                   value="@category.CategoryId"/>
+
+                            <label class="form-check-label">@category.Name</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary"/>
             </div>
         </form>
     </div>

@@ -6,6 +6,7 @@ namespace TT2_Exam.Utility
     {
         public const string RequireAdmin = "RequireAdmin";
         public const string RequirePublisher = "RequirePublisher";
+        public const string IsRightfulPublisher = "IsRightfulPublisher";
 
         public static void AddPolicies(AuthorizationOptions options)
         {
@@ -15,7 +16,7 @@ namespace TT2_Exam.Utility
             options.AddPolicy(RequirePublisher, policy =>
                 policy.RequireRole("Admin", "Publisher"));
             
-            options.AddPolicy("IsPublisher", policy =>
+            options.AddPolicy("IsRightfulPublisher", policy =>
                 policy.Requirements.Add(new IsPublisherRequirement()));
         }
     }

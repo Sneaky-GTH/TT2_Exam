@@ -22,8 +22,8 @@ namespace TT2_Exam.Models
             new List<GameSpecificCategoryModel>();
         
         [Required]
-        public string PublisherId { get; set; } = string.Empty;
-        public UserModel Publisher { get; set; } = null!;
+        [MaxLength(255)] public string PublisherId { get; set; } = string.Empty;
+        public UserModel? Publisher { get; set; }
         
         public ICollection<UserLibraryItem> Owners { get; set; } = new List<UserLibraryItem>();
 

@@ -1,0 +1,12 @@
+.checkbox-list {
+    max-height: 20vh;
+}
+
+.form-group {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.long-description {
+    height: 30vh;
+}
