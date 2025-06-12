@@ -33,4 +33,10 @@
     <data name="Cart" xml:space="preserve">
         <value>Grozs</value>
     </data>
+    <data name="Publishing" xml:space="preserve">
+        <value>Publicēšana</value>
+    </data>
+    <data name="Admin" xml:space="preserve">
+        <value>Admin</value>
+    </data>
 </root>

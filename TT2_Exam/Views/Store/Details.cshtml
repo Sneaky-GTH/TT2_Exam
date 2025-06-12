@@ -100,10 +100,22 @@
         {
             @foreach (var review in Model.Reviews)
             {
-                <div class="mb-3 p-3 review">
-                    <strong>@review.User?.UserName</strong>
-                    <p>@review.Comment</p>
-                    <small class="text-muted">Rating: @review.Rating/5</small>
+                <div class="d-flex flex-row justify-content-between mb-3 p-3 review">
+                    <div class="w-50 flex-fill">
+                        <strong>@review.User?.UserName</strong>
+                        <p>@review.Comment</p>
+                        <small class="text-muted">Rating: @review.Rating/5</small>
+                    </div>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="w-50 flex-fill">
+                            <form class="d-flex justify-content-end" method="post" asp-controller="Review" asp-action="AdminDelete">
+                                <input type="hidden" name="gameId" value="@Model.VideoGame.Id"/>
+                                <input type="hidden" name="userId" value="@review.UserId" />
+                                <button type="submit" class="btn m-2 btn-primary">Delete</button>
+                            </form>
+                        </div>
+                    }
                 </div>
             }
         }

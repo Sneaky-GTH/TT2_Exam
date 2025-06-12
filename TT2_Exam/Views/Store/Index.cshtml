@@ -4,7 +4,7 @@
 }
 
 <div class="container">
-    <form method="get" asp-action="Index">
+    <form method="get" asp-action="Index" id="storeFilterForm">
         <!-- Search Bar -->
         <div class="row">
             <div class="col-12 p-3 store-top">
@@ -67,37 +67,70 @@
 
 @section Scripts {
     <script>
-        const form = document.querySelector("form");
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('storeFilterForm');
+            const gamesContainer = document.getElementById('gamesContainer');
+            
+            const debounce = (func, delay) => {
+                let timeoutId;
+                return function() {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => func.apply(this, arguments), delay);
+                };
+            };
 
-        const submitAjaxForm = () => {
-            const formData = new FormData(form);
-            const params = new URLSearchParams(formData).toString();
+            const submitAjaxForm = async () => {
+                try {
+                    const formData = new FormData(form);
+                    const params = new URLSearchParams();
+                    
+                    if (formData.get('SearchQuery')) {
+                        params.append('searchQuery', formData.get('SearchQuery'));
+                    }
+                    
+                    formData.getAll('SelectedCategoryIds').forEach(id => {
+                        params.append('selectedCategoryIds', id);
+                    });
+                    
+                    if (formData.get('SortBy')) {
+                        params.append('sortBy', formData.get('SortBy'));
+                    }
+                    
+                    const url = `@Url.Action("Index", "Store")?${params.toString()}`;
+                    console.log('Request URL:', url);
 
-            fetch(`@Url.Action("Index", "Store")?${params}`, {
-                headers: { "X-Requested-With": "XMLHttpRequest" }
-            })
-            .then(res => res.text())
-            .then(html => {
-                document.querySelector("#gamesContainer").innerHTML = html;
+                    const response = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html'
+                        },
+                        credentials: 'include'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const html = await response.text();
+                    gamesContainer.innerHTML = html;
+                } catch (error) {
+                    console.error('Error:', error);
+                    gamesContainer.innerHTML = `<div class="alert alert-danger">Error loading results. Please try again.</div>`;
+                }
+            };
+            
+            const debouncedSubmit = debounce(submitAjaxForm, 300);
+            
+            form.addEventListener('change', function(e) {
+                if (e.target.matches('input[name="SearchQuery"], input[name="SelectedCategoryIds"], input[name="SortBy"]')) {
+                    debouncedSubmit();
+                }
             });
-        };
 
-        // Debounced filter handling
-        let debounceTimer;
-        document.querySelectorAll('.form-check-input, input[name="SearchQuery"], input[type="radio"]').forEach(input => {
-            input.addEventListener('change', function () {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(submitAjaxForm, 300);
-            });
-        });
-
-        // Handle search submit button
-        const searchBtn = document.querySelector('button[type="submit"]');
-        if (searchBtn) {
-            searchBtn.addEventListener("click", function (e) {
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 submitAjaxForm();
             });
-        }
+        });
     </script>
 }

@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TT2_Exam.Resources {
+namespace TT2_Exam.Resources.Areas.Identity.Pages.Account {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SharedResources {
+    internal class Register {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SharedResources() {
+        internal Register() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("TT2_Exam.Resources.SharedResources", typeof(SharedResources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("TT2_Exam.Resources.Areas.Identity.Pages.Account.Register", typeof(Register).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,57 +45,51 @@ namespace TT2_Exam.Resources {
             }
         }
         
-        internal static string Home {
+        internal static string RegisterLocal {
             get {
-                return ResourceManager.GetString("Home", resourceCulture);
+                return ResourceManager.GetString("RegisterLocal", resourceCulture);
             }
         }
         
-        internal static string Store {
+        internal static string Create {
             get {
-                return ResourceManager.GetString("Store", resourceCulture);
+                return ResourceManager.GetString("Create", resourceCulture);
             }
         }
         
-        internal static string Library {
+        internal static string Username {
             get {
-                return ResourceManager.GetString("Library", resourceCulture);
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         
-        internal static string Logout {
+        internal static string Email {
             get {
-                return ResourceManager.GetString("Logout", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
-        internal static string Register {
+        internal static string Password {
             get {
-                return ResourceManager.GetString("Register", resourceCulture);
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
-        internal static string Login {
+        internal static string ConfirmPassword {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
             }
         }
         
-        internal static string Cart {
+        internal static string AnotherService {
             get {
-                return ResourceManager.GetString("Cart", resourceCulture);
+                return ResourceManager.GetString("AnotherService", resourceCulture);
             }
         }
         
-        internal static string Publishing {
+        internal static string NoExternalServices {
             get {
-                return ResourceManager.GetString("Publishing", resourceCulture);
-            }
-        }
-        
-        internal static string Admin {
-            get {
-                return ResourceManager.GetString("Admin", resourceCulture);
+                return ResourceManager.GetString("NoExternalServices", resourceCulture);
             }
         }
     }

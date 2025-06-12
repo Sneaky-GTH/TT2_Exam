@@ -18,31 +18,31 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Home" xml:space="preserve">
-        <value>Home</value>
+    <data name="LocalAccount" xml:space="preserve">
+        <value>Use a local account to log in.</value>
     </data>
-    <data name="Store" xml:space="preserve">
-        <value>Store</value>
+    <data name="EmailOrUsername" xml:space="preserve">
+        <value>Username or Email</value>
     </data>
-    <data name="Library" xml:space="preserve">
-        <value>Library</value>
+    <data name="PasswordLocal" xml:space="preserve">
+        <value>Password</value>
     </data>
-    <data name="Logout" xml:space="preserve">
-        <value>Log out</value>
+    <data name="LoginLocal" xml:space="preserve">
+        <value>Log in</value>
+    </data>
+    <data name="ForgetPassword" xml:space="preserve">
+        <value>Forgot your password?</value>
     </data>
     <data name="Register" xml:space="preserve">
-        <value>Register</value>
+        <value>Register as a new user</value>
     </data>
-    <data name="Login" xml:space="preserve">
-        <value>Login</value>
+    <data name="ResendEmail" xml:space="preserve">
+        <value>Resend email confirmation</value>
     </data>
-    <data name="Cart" xml:space="preserve">
-        <value>Cart</value>
+    <data name="AnotherService" xml:space="preserve">
+        <value>Use another service to log in.</value>
     </data>
-    <data name="Publishing" xml:space="preserve">
-        <value>Publishing</value>
-    </data>
-    <data name="Admin" xml:space="preserve">
-        <value>Admin</value>
+    <data name="NoExternalConf" xml:space="preserve">
+        <value>There are no external authentication services configured.</value>
     </data>
 </root>

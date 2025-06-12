@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TT2_Exam.Data;
 using TT2_Exam.Models;
+using TT2_Exam.Utility;
 
 namespace TT2_Exam.Controllers;
 
@@ -160,5 +161,46 @@ public class ReviewController(AppDbContext context, UserManager<UserModel> userM
 
         return RedirectToAction("Details", "Store", new { id = gameId });
     }
+    
+    // POST: Review/AdminDelete/5
+    [HttpPost]
+    [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+    public async Task<IActionResult> AdminDelete(int gameId, string userId)
+    {
+        var user = await userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
+        
+        if (!User.IsInRole("Admin")) return NotFound();
+
+        var review = await context.Reviews
+            .Include(r => r.VideoGame)
+            .FirstOrDefaultAsync(r => r.UserId == userId && r.VideoGameId == gameId);
+
+        if (review == null) return NotFound();
+
+        return View(review);
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Policy = AuthorizationPolicies.RequireAdmin)]
+    public async Task<IActionResult> AdminDeleteConfirmed(int gameId, string userId)
+    {
+        var user = await userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
+        
+        if (!User.IsInRole("Admin")) return NotFound();
+
+        var review = await context.Reviews
+            .FirstOrDefaultAsync(r => r.UserId == userId && r.VideoGameId == gameId);
+
+        if (review == null) return NotFound();
+
+        context.Reviews.Remove(review);
+        await context.SaveChangesAsync();
+
+        return RedirectToAction("Details", "Store", new { id = gameId });
+    }
+    
 
 }

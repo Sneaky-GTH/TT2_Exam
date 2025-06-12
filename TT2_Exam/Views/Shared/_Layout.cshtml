@@ -1,5 +1,6 @@
 ﻿@using Microsoft.Extensions.Localization
 @using TT2_Exam.Utility
+@using Microsoft.AspNetCore.Http.Extensions
 @inject IStringLocalizerFactory LocalizerFactory
 @{
     var SharedLocalizer = LocalizerFactory.Create("SharedResources", "TT2_Exam");
@@ -26,7 +27,7 @@
     
     <!-- Body -->
     <div class="flex-grow-1 container">
-        <main role="main" class="pb-3">
+        <main class="pb-3">
             @RenderBody()
         </main>
     </div>
@@ -35,11 +36,13 @@
     <!-- Footer -->
     <footer class="footer text-muted mt-auto py-3">
         <div class="container">
-            &copy; 2025 - TT2_Exam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - 
-            <a href="@Url.Action("SetCulture", "Culture", new { culture = "en-US", returnUrl = Context.Request.Path })" class="me-2">EN</a>
-            <a href="@Url.Action("SetCulture", "Culture", new { culture = "lv-LV", returnUrl = Context.Request.Path })">LV</a>
+            &copy; 2025 - TT2_Exam -
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> -
+            <a href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "lv-LV", returnUrl = Context.Request.Path + Context.Request.QueryString })">LV</a>
+            <a href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en-US", returnUrl = Context.Request.Path + Context.Request.QueryString })">EN</a>
         </div>
     </footer>
+
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

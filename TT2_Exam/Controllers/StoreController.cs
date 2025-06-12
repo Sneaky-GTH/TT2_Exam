@@ -16,6 +16,7 @@ namespace TT2_Exam.Controllers
         private readonly IMarkdownFormatter _markdownFormatter = markdownFormatter;
 
         // GET: StoreController
+        [IgnoreAntiforgeryToken]
         public IActionResult Index(string searchQuery, List<int> selectedCategoryIds, string sortBy)
         {
             var gamesQuery = context.VideoGames

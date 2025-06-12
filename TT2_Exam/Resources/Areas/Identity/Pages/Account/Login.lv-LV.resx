@@ -1,0 +1,41 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="LocalAccount" xml:space="preserve">
+        <value>Ieiet, izmantojot vietējo kontu.</value>
+    </data>
+    <data name="EmailOrUsername" xml:space="preserve">
+        <value>Lietotājvārds vai epasts</value>
+    </data>
+    <data name="PasswordLocal" xml:space="preserve">
+        <value>Parole</value>
+    </data>
+    <data name="LoginLocal" xml:space="preserve">
+        <value>Ieiet</value>
+    </data>
+    <data name="ForgetPassword" xml:space="preserve">
+        <value>Aizmirsi savu paroli?</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Reģistrēties kā jauns lietotājs</value>
+    </data>
+    <data name="ResendEmail" xml:space="preserve">
+        <value>Atkārtoti atsūtīt epastu apstriprināšanai</value>
+    </data>
+    <data name="AnotherService" xml:space="preserve">
+        <value>Izmantot citu servisu, lai ieietu.</value>
+    </data>
+    <data name="NoExternalConf" xml:space="preserve">
+        <value>Nav pieejamas citas autentifikācijas iespējas.</value>
+    </data>
+</root>

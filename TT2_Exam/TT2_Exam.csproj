@@ -38,6 +38,18 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Identity\Pages\Account\Login.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Login.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Areas\Identity\Pages\Account\Login.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Login.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Areas\Identity\Pages\Account\Register.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Register.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -51,6 +63,25 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Index.resx</DependentUpon>
       </Compile>
+      <Compile Update="Resources\Identity\Pages\Account\Login.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Login.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Areas\Identity\Pages\Account\Login.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Login.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Areas\Identity\Pages\Account\Register.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Register.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Areas\" />
     </ItemGroup>
 
 </Project>
