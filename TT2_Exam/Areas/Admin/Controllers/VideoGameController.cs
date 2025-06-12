@@ -110,6 +110,14 @@ namespace TT2_Exam.Areas.Admin.Controllers
                         IsSelected = viewModel.Categories != null && viewModel.Categories.Any(vc => vc.CategoryId == c.Id && vc.IsSelected)
                     })
                     .ToList();
+                
+                return View(viewModel);
+            }
+
+            if (viewModel.VideoGame!.Price < 0)
+            {
+                ModelState.AddModelError("VideoGame.Price", "Price has to be a positive number!");
+                return View(viewModel);
             }
 
             // Get current user (publisher)
@@ -239,6 +247,12 @@ namespace TT2_Exam.Areas.Admin.Controllers
                     await ReloadCategories(viewModel);
                     return View(viewModel);
                 }
+            }
+            
+            if (viewModel.VideoGame!.Price < 0)
+            {
+                ModelState.AddModelError("VideoGame.Price", "Price has to be a positive number!");
+                return View(viewModel);
             }
 
             // Update fields

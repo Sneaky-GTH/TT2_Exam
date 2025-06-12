@@ -12,8 +12,8 @@ using TT2_Exam.Data;
 namespace TT2_Exam.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250611174719_InititalCreate")]
-    partial class InititalCreate
+    [Migration("20250612044208_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,6 +242,7 @@ namespace TT2_Exam.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("VideoGameId")
@@ -259,6 +260,7 @@ namespace TT2_Exam.Migrations
             modelBuilder.Entity("TT2_Exam.Models.UserLibraryItemModel", b =>
                 {
                     b.Property<string>("UserId")
+                        .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("VideoGameId")
@@ -373,7 +375,6 @@ namespace TT2_Exam.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("ThumbnailPath")
-                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 

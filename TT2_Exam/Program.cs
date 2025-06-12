@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -58,6 +59,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new CookieRequestCultureProvider()
     };
 });
+
+builder.Services.AddTransient<IClaimsTransformation, RevalidateUserClaims>();
 
 // ---------- Build App ----------
 var app = builder.Build();

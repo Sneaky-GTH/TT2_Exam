@@ -239,6 +239,7 @@ namespace TT2_Exam.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("VideoGameId")
@@ -256,6 +257,7 @@ namespace TT2_Exam.Migrations
             modelBuilder.Entity("TT2_Exam.Models.UserLibraryItemModel", b =>
                 {
                     b.Property<string>("UserId")
+                        .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("VideoGameId")
@@ -370,7 +372,6 @@ namespace TT2_Exam.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("ThumbnailPath")
-                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
