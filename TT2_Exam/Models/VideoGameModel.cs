@@ -12,7 +12,7 @@ namespace TT2_Exam.Models
         
         [MaxLength(10000)] public string Description { get; set; } = string.Empty;
         
-        [MaxLength(64)] public string ThumbnailPath { get; set; } = string.Empty;
+        [MaxLength(64)] public string? ThumbnailPath { get; set; } = string.Empty;
         
         public DateTime ReleaseDate { get; set; }
         
@@ -25,7 +25,7 @@ namespace TT2_Exam.Models
         [MaxLength(255)] public string PublisherId { get; set; } = string.Empty;
         public UserModel? Publisher { get; set; }
         
-        public ICollection<UserLibraryItem> Owners { get; set; } = new List<UserLibraryItem>();
+        public ICollection<UserLibraryItemModel> Owners { get; set; } = new List<UserLibraryItemModel>();
 
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TT2_Exam.Data;
@@ -6,20 +7,19 @@ using TT2_Exam.Utility;
 
 namespace TT2_Exam.Controllers
 {
-    public class StoreController : Controller
+    public class StoreController(
+        AppDbContext context,
+        IMarkdownFormatter markdownFormatter,
+        UserManager<UserModel> userManager)
+        : Controller
     {
-        private readonly AppDbContext _context;
-        private readonly IMarkdownFormatter _markdownFormatter;
+        private readonly IMarkdownFormatter _markdownFormatter = markdownFormatter;
 
-        public StoreController(AppDbContext context, IMarkdownFormatter markdownFormatter)
-        {
-            _context = context;
-            _markdownFormatter = markdownFormatter;
-        }
         // GET: StoreController
         public IActionResult Index(string searchQuery, List<int> selectedCategoryIds, string sortBy)
         {
-            var gamesQuery = _context.VideoGames
+            var gamesQuery = context.VideoGames
+                .AsNoTracking()
                 .Include(g => g.GameSpecificCategories)
                 .ThenInclude(vc => vc.Category)
                 .AsQueryable();
@@ -33,12 +33,19 @@ namespace TT2_Exam.Controllers
                 Games = gamesQuery.ToList(),
                 SearchQuery = searchQuery,
                 SortBy = sortBy,
-                SelectedCategoryIds = selectedCategoryIds,
-                AvailableCategories = _context.Categories.ToList()
+                SelectedCategoryIds = selectedCategoryIds ?? [],
+                AvailableCategories = context.Categories.ToList()
             };
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_GamesPartial", model);
+            }
 
             return View(model);
         }
+
+
         
         public async Task<IActionResult>  Details(int? id)
         {
@@ -47,18 +54,41 @@ namespace TT2_Exam.Controllers
                 return NotFound();
             }
 
-            var videoGameModel = await _context.VideoGames
+            var game = await context.VideoGames
                 .Include(v => v.GameSpecificCategories)
                     .ThenInclude(gc => gc.Category)
                 .Include(v => v.Publisher)
                 .FirstOrDefaultAsync(v => v.Id == id);
             
-            if (videoGameModel == null)
+            if (game == null)
             {
                 return NotFound();
             }
+            
+            var userId = userManager.GetUserId(User);
+            var ownsGame = await context.UserLibrary
+                .AnyAsync(l => l.UserId == userId && l.VideoGameId == id);
+            
+            var reviews = await context.Reviews
+                .Include(r => r.User)
+                .Where(r => r.VideoGameId == id)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
 
-            return View(videoGameModel);
+            var userReview = await context.Reviews
+                .Include(r => r.User)
+                .Where(r => r.VideoGameId == id)
+                .FirstOrDefaultAsync(r => r.UserId == userId);
+
+            var videoGameDetails = new StoreVideoGameDetailsViewModel()
+            {
+                VideoGame = game,
+                Reviews = reviews,
+                UserOwnsGame = ownsGame && User.Identity is { IsAuthenticated: true },
+                UserReview = userReview,
+            };
+
+            return View(videoGameDetails);
         }
         
         // Filter functions

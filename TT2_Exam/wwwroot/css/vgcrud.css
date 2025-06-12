@@ -10,3 +10,27 @@
 .long-description {
     height: 30vh;
 }
+
+.form-check-input {
+    background-color: #d3d3d3;
+}
+
+.form-check-input:checked {
+    background-color: #131b2c;
+    border: none;
+}
+
+.form-check-input:hover {
+    background-color: #686a75;
+}
+
+.form-check-input:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.form-check-label, .form-check-input {
+    cursor: pointer;
+    user-select: none;
+}

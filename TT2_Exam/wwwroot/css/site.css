@@ -111,7 +111,10 @@ button, .btn, .btn-link {
   background-color: #180b35;
 }
 
-.btn-link:hover {
+.btn-link:hover, .btn-link:focus, .btn:hover, .btn:focus, .btn:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
   color: white;
 }
 

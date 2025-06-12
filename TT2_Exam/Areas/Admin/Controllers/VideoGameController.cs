@@ -50,7 +50,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         }
 
         // GET: Admin/VideoGame/Details/5
-        [Authorize(Policy = "IsPublisher")]
+        [Authorize(Policy = AuthorizationPolicies.IsRightfulPublisher)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -132,17 +132,17 @@ namespace TT2_Exam.Areas.Admin.Controllers
 
             var videoGame = new VideoGameModel
             {
-                Title = Sanitizer.Sanitize(viewModel.VideoGame.Title),
+                Title = Sanitizer.Sanitize(viewModel.VideoGame!.Title),
                 Price = viewModel.VideoGame.Price,
                 ShortDescription = Sanitizer.Sanitize(viewModel.VideoGame.ShortDescription),
                 Description = Sanitizer.Sanitize(viewModel.VideoGame.Description),
-                ThumbnailPath = Sanitizer.Sanitize(viewModel.VideoGame.ThumbnailPath),
+                ThumbnailPath = Sanitizer.Sanitize(viewModel.VideoGame.ThumbnailPath!),
                 ReleaseDate = DateTime.Today,
 
                 PublisherId = user.Id,
                 Publisher = user,
 
-                GameSpecificCategories = viewModel.Categories
+                GameSpecificCategories = viewModel.Categories!
                     .Where(c => c.IsSelected)
                     .Select(c => new GameSpecificCategoryModel
                     {
@@ -193,7 +193,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         [Authorize(Policy = AuthorizationPolicies.IsRightfulPublisher)]
         public async Task<IActionResult> Edit(int id, VideoGameCreateViewModel viewModel)
         {
-            if (id != viewModel.VideoGame.Id) return NotFound();
+            if (viewModel.VideoGame != null && id != viewModel.VideoGame.Id) return NotFound();
 
             var videoGame = await _context.VideoGames
                 .Include(v => v.GameSpecificCategories)
@@ -205,7 +205,6 @@ namespace TT2_Exam.Areas.Admin.Controllers
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
                 // Log errors or inspect in debugger
-                // For example, temporarily add:
                 foreach (var error in errors)
                 {
                     Console.WriteLine(error);
@@ -243,7 +242,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
             }
 
             // Update fields
-            videoGame.Title = Sanitizer.Sanitize(viewModel.VideoGame.Title);
+            videoGame.Title = Sanitizer.Sanitize(viewModel.VideoGame!.Title);
             videoGame.Description = Sanitizer.Sanitize(viewModel.VideoGame.Description);
             videoGame.ShortDescription = Sanitizer.Sanitize(viewModel.VideoGame.ShortDescription);
             videoGame.ReleaseDate = viewModel.VideoGame.ReleaseDate;
@@ -251,7 +250,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
 
             // Update categories
             videoGame.GameSpecificCategories.Clear();
-            foreach (var category in viewModel.Categories.Where(c => c.IsSelected))
+            foreach (var category in viewModel.Categories!.Where(c => c.IsSelected))
             {
                 videoGame.GameSpecificCategories.Add(new GameSpecificCategoryModel
                 {
@@ -275,7 +274,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         // GET: Admin/VideoGame/Delete/5
-        [Authorize(Policy = "IsPublisher")]
+        [Authorize(Policy = AuthorizationPolicies.IsRightfulPublisher)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -296,7 +295,7 @@ namespace TT2_Exam.Areas.Admin.Controllers
         // POST: Admin/VideoGame/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Policy = "IsPublisher")]
+        [Authorize(Policy = AuthorizationPolicies.IsRightfulPublisher)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var videoGameModel = await _context.VideoGames.FindAsync(id);

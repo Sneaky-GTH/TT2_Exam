@@ -1,0 +1,6 @@
+@model StoreViewModel
+
+@foreach (var game in Model.Games)
+{
+    @await Html.PartialAsync("_VideoGameCard", game)
+}

@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Localization
+@using TT2_Exam.Utility
+@inject IStringLocalizerFactory LocalizerFactory
+@{
+    var SharedLocalizer = LocalizerFactory.Create("SharedResources", "TT2_Exam");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -28,7 +35,9 @@
     <!-- Footer -->
     <footer class="footer text-muted mt-auto py-3">
         <div class="container">
-            &copy; 2025 - TT2_Exam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - TT2_Exam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - 
+            <a href="@Url.Action("SetCulture", "Culture", new { culture = "en-US", returnUrl = Context.Request.Path })" class="me-2">EN</a>
+            <a href="@Url.Action("SetCulture", "Culture", new { culture = "lv-LV", returnUrl = Context.Request.Path })">LV</a>
         </div>
     </footer>
 </div>

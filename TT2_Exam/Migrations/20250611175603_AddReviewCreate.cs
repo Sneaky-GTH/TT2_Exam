@@ -5,7 +5,7 @@
 namespace TT2_Exam.Migrations
 {
     /// <inheritdoc />
-    public partial class VideoGameCreateView : Migration
+    public partial class AddReviewCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

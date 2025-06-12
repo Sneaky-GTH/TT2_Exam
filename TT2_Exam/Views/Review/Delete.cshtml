@@ -1,0 +1,14 @@
+@model TT2_Exam.Models.ReviewModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="mt-4">Are you sure you want to delete your review?</h3>
+    
+    <form method="post" asp-action="DeleteConfirmed">
+        <input type="hidden" name="gameId" asp-for="@Model.VideoGameId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-controller="Store" asp-action="Details" asp-route-id="@Model.VideoGameId">Back to Game</a>
+    </form>

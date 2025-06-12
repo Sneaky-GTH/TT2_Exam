@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TT2_Exam.Models;
 
-public class UserLibraryItem
+public class UserLibraryItemModel
 {
-    public string UserId { get; set; }
+    [MaxLength(255)] public string? UserId { get; set; }
     public UserModel? User { get; set; }
 
     public int VideoGameId { get; set; }

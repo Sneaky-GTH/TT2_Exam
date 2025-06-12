@@ -1,0 +1,28 @@
+@model System.Collections.Generic.List<TT2_Exam.Models.UserLibraryItemModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2 class="mt-3 mb-3">Your Library</h2>
+
+@if (!Model.Any())
+{
+    <p>You don't own any games.</p>
+}
+else
+{
+    
+    <div class="col-md-8 m-2 max-h-50 overflow-scroll library-list p-2">
+        @foreach (var item in Model)
+        {
+            @await Html.PartialAsync("_LibraryVideoGameCard", item)
+        }
+    </div>
+    
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/library.css" />
+}

@@ -14,6 +14,12 @@ namespace TT2_Exam.Data
         public DbSet<VideoGameModel> VideoGames { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<GameSpecificCategoryModel> GameSpecificCategories { get; set; }
+        
+        public DbSet<UserLibraryItemModel> UserLibrary { get; set; }
+        
+        public DbSet<CartItemModel> CartItems { get; set; }
+        
+        public DbSet<ReviewModel> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,15 +44,15 @@ namespace TT2_Exam.Data
                 .HasForeignKey(v => v.PublisherId)
                 .OnDelete(DeleteBehavior.Restrict);
             
-            modelBuilder.Entity<UserLibraryItem>()
+            modelBuilder.Entity<UserLibraryItemModel>()
                 .HasKey(ul => new { ul.UserId, ul.VideoGameId });
 
-            modelBuilder.Entity<UserLibraryItem>()
+            modelBuilder.Entity<UserLibraryItemModel>()
                 .HasOne(ul => ul.User)
                 .WithMany(u => u.Library)
                 .HasForeignKey(ul => ul.UserId);
 
-            modelBuilder.Entity<UserLibraryItem>()
+            modelBuilder.Entity<UserLibraryItemModel>()
                 .HasOne(ul => ul.VideoGame)
                 .WithMany(v => v.Owners)
                 .HasForeignKey(ul => ul.VideoGameId);

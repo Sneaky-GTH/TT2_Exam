@@ -158,6 +158,33 @@ namespace TT2_Exam.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("TT2_Exam.Models.CartItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("VideoGameId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VideoGameId");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("TT2_Exam.Models.CategoryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -191,7 +218,42 @@ namespace TT2_Exam.Migrations
                     b.ToTable("GameSpecificCategories");
                 });
 
-            modelBuilder.Entity("TT2_Exam.Models.UserLibraryItem", b =>
+            modelBuilder.Entity("TT2_Exam.Models.ReviewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("VideoGameId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VideoGameId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("TT2_Exam.Models.UserLibraryItemModel", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
@@ -206,7 +268,7 @@ namespace TT2_Exam.Migrations
 
                     b.HasIndex("VideoGameId");
 
-                    b.ToTable("UserLibraryItem");
+                    b.ToTable("UserLibrary");
                 });
 
             modelBuilder.Entity("TT2_Exam.Models.UserModel", b =>
@@ -375,6 +437,25 @@ namespace TT2_Exam.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TT2_Exam.Models.CartItemModel", b =>
+                {
+                    b.HasOne("TT2_Exam.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TT2_Exam.Models.VideoGameModel", "VideoGame")
+                        .WithMany()
+                        .HasForeignKey("VideoGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("VideoGame");
+                });
+
             modelBuilder.Entity("TT2_Exam.Models.GameSpecificCategoryModel", b =>
                 {
                     b.HasOne("TT2_Exam.Models.CategoryModel", "Category")
@@ -394,7 +475,26 @@ namespace TT2_Exam.Migrations
                     b.Navigation("VideoGame");
                 });
 
-            modelBuilder.Entity("TT2_Exam.Models.UserLibraryItem", b =>
+            modelBuilder.Entity("TT2_Exam.Models.ReviewModel", b =>
+                {
+                    b.HasOne("TT2_Exam.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TT2_Exam.Models.VideoGameModel", "VideoGame")
+                        .WithMany()
+                        .HasForeignKey("VideoGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("VideoGame");
+                });
+
+            modelBuilder.Entity("TT2_Exam.Models.UserLibraryItemModel", b =>
                 {
                     b.HasOne("TT2_Exam.Models.UserModel", "User")
                         .WithMany("Library")

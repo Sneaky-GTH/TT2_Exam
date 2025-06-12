@@ -1,0 +1,27 @@
+@model TT2_Exam.Models.CartItemModel
+
+<div class="card border-start-4 border-end-4 border-top-2 border-bottom-4 rounded-0 cart-item m-2">
+    <div class="card-body d-flex flex-row justify-content-between">
+        <!-- Left side: Thumbnail -->
+        <div class="flex-fill w-50">
+            <div class="d-flex flex-row">
+                <div>
+                    <a asp-controller="Store" asp-action="Details" asp-route-id="@Model.VideoGame.Id" class="text-decoration-none text-reset">
+                        <img src="@Url.Content(Model.VideoGame.ThumbnailPath)" alt="@Model.VideoGame.Title" class="img-fluid rounded" style="width: 120px; height: 60px; object-fit: cover;">
+                    </a>
+                </div>
+                <div class="align-items-center d-flex ms-4">
+                    <h4 class="card-title">@Model.VideoGame.Title</h4>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end w-50">
+            <p class="card-text mb-0 me-3">$@Model.VideoGame.Price.ToString("F2")</p>
+
+            <form method="post" asp-action="RemoveFromCart" asp-route-id="@Model.Id" class="m-0">
+                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+            </form>
+        </div>
+
+    </div>
+</div>

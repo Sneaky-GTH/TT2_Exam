@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TT2_Exam.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InititalCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -229,7 +229,7 @@ namespace TT2_Exam.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ReleaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    PublisherId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    PublisherId = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -241,6 +241,35 @@ namespace TT2_Exam.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    VideoGameId = table.Column<int>(type: "int", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CartItems_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_VideoGames_VideoGameId",
+                        column: x => x.VideoGameId,
+                        principalTable: "VideoGames",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -270,7 +299,39 @@ namespace TT2_Exam.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "UserLibraryItem",
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    VideoGameId = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_VideoGames_VideoGameId",
+                        column: x => x.VideoGameId,
+                        principalTable: "VideoGames",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserLibrary",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -280,15 +341,15 @@ namespace TT2_Exam.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLibraryItem", x => new { x.UserId, x.VideoGameId });
+                    table.PrimaryKey("PK_UserLibrary", x => new { x.UserId, x.VideoGameId });
                     table.ForeignKey(
-                        name: "FK_UserLibraryItem_AspNetUsers_UserId",
+                        name: "FK_UserLibrary_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserLibraryItem_VideoGames_VideoGameId",
+                        name: "FK_UserLibrary_VideoGames_VideoGameId",
                         column: x => x.VideoGameId,
                         principalTable: "VideoGames",
                         principalColumn: "Id",
@@ -334,13 +395,33 @@ namespace TT2_Exam.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CartItems_UserId",
+                table: "CartItems",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_VideoGameId",
+                table: "CartItems",
+                column: "VideoGameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GameSpecificCategories_CategoryId",
                 table: "GameSpecificCategories",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLibraryItem_VideoGameId",
-                table: "UserLibraryItem",
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_VideoGameId",
+                table: "Reviews",
+                column: "VideoGameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLibrary_VideoGameId",
+                table: "UserLibrary",
                 column: "VideoGameId");
 
             migrationBuilder.CreateIndex(
@@ -368,10 +449,16 @@ namespace TT2_Exam.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CartItems");
+
+            migrationBuilder.DropTable(
                 name: "GameSpecificCategories");
 
             migrationBuilder.DropTable(
-                name: "UserLibraryItem");
+                name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "UserLibrary");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

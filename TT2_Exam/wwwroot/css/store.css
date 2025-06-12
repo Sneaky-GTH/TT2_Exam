@@ -78,3 +78,19 @@
 div .detail-category {
     background-color: rgba(15, 3, 34, 0.8) !important;
 }
+
+.review-box {
+    border: 0;
+    color: white;
+    background-color: rgba(44, 11, 71, 0.5);
+}
+
+.review {
+    color: white;
+    background-color: rgba(39, 11, 66, 0.75);
+}
+
+.review-user {
+    color: white;
+    background-color: rgba(29, 17, 81, 0.75);
+}

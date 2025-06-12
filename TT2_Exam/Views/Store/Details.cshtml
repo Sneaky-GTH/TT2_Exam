@@ -1,4 +1,4 @@
-@model TT2_Exam.Models.VideoGameModel
+@model TT2_Exam.Models.StoreVideoGameDetailsViewModel
 @using TT2_Exam.Utility
 @inject IMarkdownFormatter MarkdownFormatter
 
@@ -14,11 +14,11 @@
             <div class="flex-fill col-9">
                 <div class="d-flex flex-column h-100">
                     <div class="flex-fill h-50 d-flex align-items-end justify-content-end">
-                        <h1>@Html.DisplayFor(model => model.Title)</h1>
+                        <h1>@Html.DisplayFor(model => model.VideoGame!.Title)</h1>
                     </div>
                     <div class="flex-fill h-50 d-flex align-items-start justify-content-end">
                         <em>
-                            @foreach (var gameCategory in Model.GameSpecificCategories.OrderBy(gc => gc.Category?.Name))
+                            @foreach (var gameCategory in Model.VideoGame!.GameSpecificCategories.OrderBy(gc => gc.Category?.Name))
                             {
                                 if (gameCategory.Category == null)
                                 {
@@ -35,19 +35,84 @@
         </div>
     </div>
 
-    <div class="flex-fill w-50"><img src="@Url.Content(Model.ThumbnailPath)" alt="@Model.Title" class="img-fluid detail-image" style="width: 80%; height: auto; max-height: 40vh; object-fit: cover;"></div>
+    <div class="flex-fill w-50"><img src="@Url.Content(Model.VideoGame.ThumbnailPath)" alt="@Model.VideoGame.Title" class="img-fluid detail-image" style="width: 80%; height: auto; max-height: 40vh; object-fit: cover;"></div>
 </div>
 
 <!-- Description -->
 <div class="d-flex flex-row justify-content-between mt-5">
     <div class="col-3 flex-fill"></div>
-    <div class="col-9 flex-fill">@Html.Raw(MarkdownFormatter.Format(Model.Description))</div>
+    <div class="col-9 flex-fill">@Html.Raw(MarkdownFormatter.Format(Model.VideoGame.Description))</div>
     <div class="col-3 flex-fill"></div>
 </div>
 
-<!--<div>
-    @Model.Publisher.UserName
-</div>-->
+<div class="d-flex mt-4 justify-content-center">
+    <form method="post" asp-controller="Cart" asp-action="AddToCart" asp-route-gameId="@Model.VideoGame.Id">
+        <button type="submit" class="btn btn-lg cart-button">Add to Cart</button>
+    </form>
+</div>
+
+<!-- Reviews -->
+<div class="mt-5">
+    <h2>Reviews</h2>
+
+    <!-- User's Own Review or Prompt -->
+    @if (Model.UserOwnsGame)
+    {
+        <hr />
+        if (Model.UserReview != null)
+        {
+            <div class="mb-4 p-3 review-user">
+                <h5>Your Review:</h5>
+                <p>@Model.UserReview.Comment</p>
+                <p class="text-muted">Rating: @Model.UserReview.Rating/5</p>
+                <div class="d-flex flex-row">
+                    <div>
+                        <form method="get" asp-controller="Review" asp-action="Edit">
+                            <input type="hidden" name="gameId" value="@Model.VideoGame.Id"/>
+                            <button type="submit" class="btn m-2 btn-primary">Edit</button>
+                        </form>
+                    </div>
+                    <div>
+                        <form method="get" asp-controller="Review" asp-action="Delete">
+                            <input type="hidden" name="gameId" value="@Model.VideoGame.Id"/>
+                            <button type="submit" class="btn m-2 btn-primary">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="mb-4 p-3">
+                <p>You haven't reviewed this game yet.</p>
+                <form method="get" asp-controller="Review" asp-action="Create">
+                    <input type="hidden" name="gameId" value="@Model.VideoGame.Id" />
+                    <button type="submit" class="btn btn-primary">Write a Review</button>
+                </form>
+            </div>
+        }
+    }
+
+    <hr />
+    
+    <div class="review-box p-3">
+        @if (Model.Reviews != null && Model.Reviews.Any())
+        {
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="mb-3 p-3 review">
+                    <strong>@review.User?.UserName</strong>
+                    <p>@review.Comment</p>
+                    <small class="text-muted">Rating: @review.Rating/5</small>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No reviews yet.</p>
+        }
+    </div>
+</div>
 
 
 @section Styles {

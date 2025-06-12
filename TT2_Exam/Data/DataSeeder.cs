@@ -63,6 +63,25 @@ public static class DataSeeder
             }
         }
         
+        // seed another default user
+        const string user2Username = "user2";
+        const string user2Email = "user2@example.com";
+        const string user2Password = "User$1";
+        if (await userManager.FindByEmailAsync(user2Email) is null)
+        {
+            var normalUser = new UserModel
+            {
+                UserName = user2Username,
+                Email = user2Email,
+            };
+
+            var result = await userManager.CreateAsync(normalUser, user2Password);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(normalUser, "User");
+            }
+        }
+        
         // seed a publisher user
         const string pubUsername = "BigPublishing";
         const string pubEmail = "contact@publishing.big";
@@ -99,12 +118,18 @@ public static class DataSeeder
                 await userManager.AddToRoleAsync(normalUser, "Publisher");
             }
         }
+        
+        var userOne = await userManager.FindByEmailAsync(userEmail);
+        var userOneId = userOne!.Id;
+        
+        var userTwo = await userManager.FindByEmailAsync(user2Email);
+        var userTwoId = userTwo!.Id;
 
         var publisherOne = await userManager.FindByEmailAsync(pubEmail);
-        var publisherOneId = publisherOne.Id;
+        var publisherOneId = publisherOne!.Id;
         
         var publisherTwo = await userManager.FindByEmailAsync(pubEmail2);
-        var publisherTwoId = publisherTwo.Id;
+        var publisherTwoId = publisherTwo!.Id;
 
         var categories = new List<CategoryModel>
         {
@@ -266,5 +291,38 @@ public static class DataSeeder
         );
 
         await context.SaveChangesAsync();
+
+        context.UserLibrary.AddRange(
+            new UserLibraryItemModel
+            {
+                UserId = userOneId,
+                VideoGameId = games.First(g => g.Title == "Factorio").Id,
+            },
+            new UserLibraryItemModel
+            {
+                UserId = userTwoId,
+                VideoGameId = games.First(g => g.Title == "Factorio").Id,
+            }
+        );
+
+        context.Reviews.AddRange(
+            new ReviewModel
+            {
+                UserId = userOneId,
+                VideoGameId = games.First(g => g.Title == "Factorio").Id,
+                Comment = "I really enjoyed this game!! It is super cool!",
+                Rating = 5,
+            },
+            new ReviewModel
+            {
+                UserId = userTwoId,
+                VideoGameId = games.First(g => g.Title == "Factorio").Id,
+                Comment = "It's pretty damn good I must say so myself.!",
+                Rating = 4,
+            }
+        );
+        
+        await context.SaveChangesAsync();
+        
     }
 }

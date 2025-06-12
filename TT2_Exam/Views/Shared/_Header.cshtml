@@ -1,6 +1,12 @@
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Localization
+@using TT2_Exam.Utility
 @inject SignInManager<UserModel> SignInManager
 @inject UserManager<UserModel> UserManager
+@inject IStringLocalizerFactory LocalizerFactory
+@{
+    var SharedLocalizer = LocalizerFactory.Create("SharedResources", "TT2_Exam");
+}
 
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-1 mt-1">
@@ -19,16 +25,28 @@
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
                         <ul class="navbar-nav fw-bold fs-5">
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">@SharedLocalizer["Home"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Store" asp-action="Index">Store</a>
+                                <a class="nav-link" asp-area="" asp-controller="Store" asp-action="Index">@SharedLocalizer["Store"]</a>
                             </li>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Library" asp-action="Index">@SharedLocalizer["Library"]</a>
+                                </li>
+                            }
                             @if (User.IsInRole("Admin") || User.IsInRole("Publisher"))
                             {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="VideoGame" asp-action="Index">Publishing</a>
+                                <a class="nav-link" asp-area="Admin" asp-controller="VideoGame" asp-action="Index">@SharedLocalizer["Publishing"]</a>
                             </li>
+                            }
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Index">@SharedLocalizer["Admin"]</a>
+                                </li>
                             }
                         </ul>
                     </div>
@@ -43,14 +61,15 @@
                             <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">@User.Identity?.Name</a></li>
                             <li class="nav-item">
                                 <form asp-area="Identity" asp-page="/Account/Logout" method="post" id="logoutForm" class="form-inline">
-                                    <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" onchange="this.form.submit()">Logout</a>
+                                    <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" onchange="this.form.submit()">@SharedLocalizer["Logout"]</a>
                                 </form>
                             </li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Cart" asp-action="Index">@SharedLocalizer["Cart"]</a></li>
                         }
                         else
                         {
-                            <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Login">@SharedLocalizer["Login"]</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Register">@SharedLocalizer["Register"]</a></li>
                         }
                         </ul>
                     </div>

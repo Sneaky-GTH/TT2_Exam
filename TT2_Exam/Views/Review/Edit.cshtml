@@ -1,0 +1,27 @@
+@model TT2_Exam.Models.ReviewCreateViewModel
+
+<h2>Edit your Review</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="VideoGameId" />
+
+    <div class="form-group m-2">
+        <label class="m-1" asp-for="Rating"></label>
+        <select asp-for="Rating" class="form-control">
+            <option value="1">1 - Awful</option>
+            <option value="2">2 - Poor</option>
+            <option value="3">3 - Average</option>
+            <option value="4">4 - Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+
+    <div class="form-group m-2">
+        <label class="m-1" asp-for="Comment"></label>
+        <textarea asp-for="Comment" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Comment" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn m-2 btn-primary">Edit Review</button>
+</form>

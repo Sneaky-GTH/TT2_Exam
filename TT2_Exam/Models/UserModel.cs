@@ -10,6 +10,6 @@ namespace TT2_Exam.Models
         
         public ICollection<VideoGameModel> PublishedGames { get; set; } = new List<VideoGameModel>();
         
-        public ICollection<UserLibraryItem> Library { get; set; } = new List<UserLibraryItem>();
+        public ICollection<UserLibraryItemModel> Library { get; set; } = new List<UserLibraryItemModel>();
     }
 }

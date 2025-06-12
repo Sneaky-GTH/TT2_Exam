@@ -1,0 +1,28 @@
+@model UserDetailsViewModel
+
+@{
+    ViewData["Title"] = "Manage User Roles";
+}
+
+<h2>User Details</h2>
+
+<p><strong>Email:</strong> @Model.User.Email</p>
+<p><strong>UserName:</strong> @Model.User.UserName</p>
+
+<h3>Roles</h3>
+
+<form asp-action="UpdateRoles" method="post">
+    <input type="hidden" name="id" value="@Model.User.Id" />
+    @foreach (var role in Model.AllRoles)
+    {
+        <div class="form-check">
+            <input type="radio" class="form-check-input" 
+                   name="selectedRoles" value="@role"
+                   @(role != null && Model.CurrentRoles.Contains(role) ? "checked" : "")/>
+            <label class="form-check-label">@role</label>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-success mt-2">Update Roles</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Back</a>
+</form>

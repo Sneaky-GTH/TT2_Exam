@@ -1,0 +1,19 @@
+@model TT2_Exam.Models.UserLibraryItemModel
+
+<div class="library-item rounded-0 p-2 m-2">
+    <div class="d-flex flex-row justify-content-between">
+        <!-- Left side: Thumbnail -->
+        <div class="flex-fill">
+            <div class="d-flex flex-row">
+                <div>
+                    <a asp-controller="Store" asp-action="Details" asp-route-id="@Model.VideoGame!.Id" class="text-decoration-none text-reset">
+                        <img src="@Url.Content(Model.VideoGame!.ThumbnailPath)" alt="@Model.VideoGame.Title" class="img-fluid rounded" style="width: 120px; height: 60px; object-fit: cover;">
+                    </a>
+                </div>
+                <div class="align-items-center d-flex ms-4">
+                    <h4 class="card-title">@Model.VideoGame!.Title</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
